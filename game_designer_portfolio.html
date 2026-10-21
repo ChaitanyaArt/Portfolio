@@ -1,0 +1,2046 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Designer | Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        bgDark: '#09090b', // Zinc 950
+                        panelBg: '#18181b', // Zinc 900
+                        accent: '#e11d48', // Vibrant Rose accent derived from the beauty portrait
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.4s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(10px) scale(0.98)' },
+                            '100%': { opacity: '1', transform: 'translateY(0) scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar for an editorial feel */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #09090b; }
+        ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #3f3f46; }
+        
+        /* Hide scrollbar for the horizontal card row but keep functionality */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Image placeholder styling */
+        .img-placeholder {
+            background: linear-gradient(45deg, #18181b 25%, #27272a 25%, #27272a 50%, #18181b 50%, #18181b 75%, #27272a 75%, #27272a 100%);
+            background-size: 20px 20px;
+        }
+
+        /* Focus states for accessibility */
+        :focus-visible {
+            outline: 2px solid #d97706;
+            outline-offset: 4px;
+        }
+        
+        /* Base styles for the overlapping deck */
+        .project-card {
+            transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1), box-shadow 0.3s ease;
+            will-change: transform;
+        }
+
+        /* --- THEME OVERRIDES: RACING (Track Legends) --- */
+        #project-view.theme-racing {
+            --accent: #e10600; /* Motorsport Red */
+            background-color: #050505;
+        }
+        /* Engineering Grid Background */
+        #project-view.theme-racing::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+            pointer-events: none;
+        }
+        /* Typography Overrides */
+        #project-view.theme-racing .font-serif,
+        #project-view.theme-racing .cs-heading {
+            font-family: 'Barlow Condensed', sans-serif !important;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+        #project-view.theme-racing .cs-label {
+            font-family: 'JetBrains Mono', monospace !important;
+            color: #71717a !important;
+            font-size: 0.65rem !important;
+            letter-spacing: 0.1em;
+        }
+        #project-view.theme-racing p { color: #d4d4d8; }
+        
+        /* Colors & Sharp UI */
+        #project-view.theme-racing .bg-accent { background-color: var(--accent) !important; }
+        #project-view.theme-racing .text-accent { color: var(--accent) !important; }
+        #project-view.theme-racing .border-accent,
+        #project-view.theme-racing .border-l-accent { border-color: var(--accent) !important; }
+        #project-view.theme-racing .rounded-xl,
+        #project-view.theme-racing .rounded-lg { border-radius: 2px !important; }
+        #project-view.theme-racing .border-y,
+        #project-view.theme-racing .border-t,
+        #project-view.theme-racing .border-b { border-color: rgba(255,255,255,0.05); }
+
+        /* Title Racing Accent */
+        #project-view.theme-racing #case-study-title {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            color: #fff;
+            font-weight: 700;
+        }
+        #project-view.theme-racing #case-study-title::before {
+            content: '';
+            display: inline-block;
+            width: 14px;
+            height: 42px;
+            background-color: var(--accent);
+            transform: skewX(-15deg);
+        }
+
+        /* Origin Story Intro Styling */
+        #project-view.theme-racing #case-study-challenge > p:nth-of-type(1),
+        #project-view.theme-racing #case-study-challenge > p:nth-of-type(2) {
+            font-size: 1.1rem;
+            border-left: 2px solid rgba(255,255,255,0.1);
+            padding-left: 1rem;
+        }
+
+        /* Challenge Cards */
+        #project-view.theme-racing .cs-challenge-card {
+            border-left: 3px solid var(--accent) !important;
+            background: linear-gradient(135deg, rgba(20,20,20,0.9), rgba(10,10,10,0.9)) !important;
+        }
+        #project-view.theme-racing .cs-challenge-card h4 { color: #fff; font-size: 1rem; letter-spacing: 0.02em; }
+
+        /* Timeline / Sectors */
+        #project-view.theme-racing .cs-timeline-container { 
+            border-left: 2px solid rgba(255,255,255,0.1); 
+            counter-reset: stage-counter;
+        }
+        #project-view.theme-racing .cs-timeline-stage {
+            counter-increment: stage-counter;
+        }
+        #project-view.theme-racing .cs-timeline-stage .cs-heading::before {
+            content: 'SEC-' counter(stage-counter);
+            display: inline-block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            background: #111;
+            color: #fff;
+            padding: 2px 6px;
+            border: 1px solid rgba(255,255,255,0.2);
+            margin-right: 8px;
+            transform: skewX(-10deg);
+        }
+        #project-view.theme-racing .cs-timeline-marker {
+            background-color: #050505 !important;
+            border: 2px solid var(--accent) !important;
+            border-radius: 0 !important;
+            width: 12px !important; 
+            height: 12px !important;
+            left: -32px !important;
+            transform: rotate(45deg);
+            box-shadow: none !important;
+            top: 6px !important;
+        }
+        #project-view.theme-racing .cs-timeline-stage:hover .cs-timeline-marker {
+            background-color: var(--accent) !important;
+            box-shadow: 0 0 15px rgba(225,6,0,0.6) !important;
+        }
+
+        /* Roadmap Future Plans Grid */
+        #project-view.theme-racing #case-study-iteration ul {
+            list-style: none !important;
+            padding-left: 0 !important;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        #project-view.theme-racing #case-study-iteration ul li {
+            background: rgba(20,20,20,0.5);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            border-left: 2px dashed rgba(255,255,255,0.2);
+            font-size: 0.9rem;
+            color: #a1a1aa;
+        }
+        #project-view.theme-racing #case-study-iteration ul li strong {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.25rem;
+            letter-spacing: 0.05em;
+            color: #fff;
+            text-transform: uppercase;
+            margin-bottom: 0.25rem;
+        }
+
+        /* Telemetry Video Container */
+        #project-view.theme-racing .cs-video-container {
+            border: 2px solid rgba(255,255,255,0.1);
+            border-bottom: 4px solid var(--accent);
+        }
+        #project-view.theme-racing .cs-video-container::after {
+            content: 'REC // V-COMP';
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--accent);
+            animation: blink 2s infinite;
+            z-index: 20;
+            background: rgba(0,0,0,0.5);
+            padding: 2px 6px;
+            pointer-events: none;
+        }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        /* Lesson Cards */
+        #project-view.theme-racing .cs-lesson-card {
+            border-top: 2px solid var(--accent) !important;
+            background: linear-gradient(180deg, rgba(30,30,30,0.8), rgba(10,10,10,0.8)) !important;
+        }
+        #project-view.theme-racing .cs-lesson-card h5 {
+            font-family: 'Barlow Condensed', sans-serif !important;
+            text-transform: uppercase;
+            font-size: 1.2rem;
+            letter-spacing: 0.05em;
+            color: #fff;
+        }
+        
+        /* --- THEME OVERRIDES: STEAMPUNK (Ultimate Gunship) --- */
+        #project-view.theme-steampunk {
+            --steam-bg: #11100e;
+            --steam-panel: #1a1816;
+            --steam-brass: #c9a25e;
+            --steam-copper: #b86a3d;
+            --steam-iron: #2c2824;
+            --steam-text: #e6dfd3;
+            --steam-muted: #8c8577;
+            background-color: var(--steam-bg);
+        }
+        
+        /* Ambient Boiler Glow & Gear Background */
+        #project-view.theme-steampunk::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: 
+                radial-gradient(circle at 100% 0%, rgba(184, 106, 61, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 0% 100%, rgba(201, 162, 94, 0.03) 0%, transparent 40%);
+            background-size: cover;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        /* Typography Overrides & Metallic Headings */
+        #project-view.theme-steampunk .font-serif,
+        #project-view.theme-steampunk .cs-heading {
+            font-family: 'Playfair Display', serif !important;
+            background: linear-gradient(to bottom, #f3e7d3, #c9a25e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.02em;
+            position: relative;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+        }
+        #project-view.theme-steampunk .cs-heading::after {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--steam-brass), transparent);
+            margin-top: 6px;
+        }
+
+        #project-view.theme-steampunk .cs-label {
+            color: var(--steam-copper) !important;
+            letter-spacing: 0.15em;
+            font-family: 'Inter', sans-serif !important;
+            font-weight: 600;
+            text-transform: uppercase;
+            border-bottom: 1px solid rgba(184, 106, 61, 0.2);
+            padding-bottom: 2px;
+            display: inline-block;
+        }
+        
+        /* Spacing & Panel Wrapping for Text */
+        #project-view.theme-steampunk #case-study-challenge,
+        #project-view.theme-steampunk #case-study-solution,
+        #project-view.theme-steampunk #case-study-iteration {
+            display: flex;
+            flex-direction: column;
+            gap: 1.75rem;
+        }
+        #project-view.theme-steampunk #cs-content-body p:not(.text-xs) {
+            background: var(--steam-panel);
+            border: 1px solid var(--steam-iron);
+            border-left: 3px solid var(--steam-brass);
+            padding: 1.5rem 1.75rem;
+            border-radius: 2px;
+            color: var(--steam-text);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            margin: 0; 
+            line-height: 1.7;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Hardware Rivets & Gear Watermark for Panels */
+        #project-view.theme-steampunk #cs-content-body p:not(.text-xs)::before {
+            content: '⚙';
+            position: absolute;
+            right: -15px;
+            bottom: -30px;
+            font-size: 8rem;
+            color: var(--steam-brass);
+            opacity: 0.03;
+            pointer-events: none;
+            line-height: 1;
+        }
+        #project-view.theme-steampunk #cs-content-body p:not(.text-xs)::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: 
+                radial-gradient(circle at 10px 10px, rgba(201, 162, 94, 0.3) 1.5px, transparent 2px),
+                radial-gradient(circle at 10px calc(100% - 10px), rgba(201, 162, 94, 0.3) 1.5px, transparent 2px);
+            pointer-events: none;
+        }
+
+        /* Central Brass Piping for Side-by-Side Layout */
+        #project-view.theme-steampunk .steampunk-pipe-container {
+            position: relative;
+        }
+        #project-view.theme-steampunk .steampunk-pipe-container::before {
+            content: '';
+            position: absolute;
+            top: 40px;
+            bottom: 40px;
+            left: 50%;
+            width: 6px;
+            background: linear-gradient(90deg, #1a1816, var(--steam-brass), #1a1816);
+            transform: translateX(-50%);
+            border-radius: 3px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.8);
+            z-index: 0;
+            display: none;
+        }
+        @media (min-width: 768px) {
+            #project-view.theme-steampunk .steampunk-pipe-container::before {
+                display: block;
+            }
+        }
+        #project-view.theme-steampunk .steampunk-node {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Image Viewports / Technical Schematics */
+        #project-view.theme-steampunk .cs-image-container {
+            border: 6px solid var(--steam-iron);
+            background: #111;
+            padding: 8px;
+            border-radius: 6px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,1), 0 15px 40px rgba(0,0,0,0.8), 0 0 0 2px var(--steam-brass);
+            position: relative;
+            margin: 0.5rem 0;
+        }
+        #project-view.theme-steampunk .cs-image-container::before {
+            content: '';
+            position: absolute;
+            inset: 2px;
+            border: 1px solid rgba(201, 162, 94, 0.4);
+            pointer-events: none;
+            z-index: 10;
+            background-image: 
+                radial-gradient(circle at 6px 6px, var(--steam-brass) 2px, transparent 2.5px),
+                radial-gradient(circle at calc(100% - 6px) 6px, var(--steam-brass) 2px, transparent 2.5px),
+                radial-gradient(circle at 6px calc(100% - 6px), var(--steam-brass) 2px, transparent 2.5px),
+                radial-gradient(circle at calc(100% - 6px) calc(100% - 6px), var(--steam-brass) 2px, transparent 2.5px);
+        }
+        #project-view.theme-steampunk .cs-image-container img {
+            border-radius: 2px;
+            border: 1px solid rgba(201, 162, 94, 0.1);
+            filter: sepia(0.3) contrast(1.1) brightness(0.85);
+            transition: filter 0.4s ease;
+        }
+        #project-view.theme-steampunk .cs-image-container:hover img {
+            filter: sepia(0) contrast(1) brightness(1);
+        }
+
+        /* Bulleted Lessons into Technical Readouts */
+        #project-view.theme-steampunk #case-study-lessons ul {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
+        }
+        #project-view.theme-steampunk #case-study-lessons ul li {
+            background: linear-gradient(180deg, var(--steam-panel), #141311);
+            border: 1px solid var(--steam-iron);
+            border-top: 2px solid var(--steam-copper);
+            padding: 1.5rem 1.5rem 1.5rem 3.5rem;
+            border-radius: 2px;
+            color: var(--steam-text);
+            position: relative;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        #project-view.theme-steampunk #case-study-lessons ul li::before {
+            content: '⚙';
+            position: absolute;
+            left: 1.25rem;
+            top: 1.5rem;
+            font-size: 1.25rem;
+            color: var(--steam-brass);
+            opacity: 0.8;
+        }
+
+        /* Main Media / Blueprint Frame */
+        #project-view.theme-steampunk #cs-main-media {
+            border: 2px solid var(--steam-iron);
+            border-bottom: 4px solid var(--steam-copper);
+            background: #000;
+            border-radius: 4px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.7);
+        }
+        #project-view.theme-steampunk #cs-main-media::after {
+            content: 'TRGT // LCK // SYS-01';
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--steam-copper);
+            background: rgba(0,0,0,0.8);
+            padding: 2px 6px;
+            border: 1px solid var(--steam-iron);
+            pointer-events: none;
+        }
+
+        /* --- THEME OVERRIDES: PEACE BY PIECES --- */
+        #project-view.theme-peace {
+            --accent: #fbbf24; /* Playful Amber/Yellow */
+            background-color: #18181b; /* Dark workshop tone */
+        }
+        
+        /* Playful, chunky typography */
+        #project-view.theme-peace .font-serif,
+        #project-view.theme-peace .cs-heading {
+            font-family: 'Inter', sans-serif !important;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: #fff;
+        }
+        
+        /* Overcooked-style chunky UI borders */
+        #project-view.theme-peace .rounded-xl,
+        #project-view.theme-peace .rounded-lg {
+            border-radius: 1rem !important;
+        }
+        
+        #project-view.theme-peace .cs-timeline-marker {
+            border: 3px solid #3f3f46 !important;
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.3) !important;
+        }
+
+        #project-view.theme-peace .cs-image-container {
+            border: 4px solid #3f3f46;
+            border-radius: 1.5rem;
+            box-shadow: 6px 6px 0 rgba(0,0,0,0.3);
+            background-color: #27272a;
+        }
+
+        #project-view.theme-peace .cs-lesson-card {
+            border: 3px solid #3f3f46 !important;
+            border-radius: 1.25rem !important;
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.3) !important;
+            background: #27272a !important;
+        }
+        /* --- END THEME OVERRIDES --- */
+    </style>
+</head>
+<body class="bg-bgDark text-zinc-300 font-sans antialiased selection:bg-accent selection:text-white relative overflow-x-hidden">
+
+    <!-- Global Fixed Background Image for Entire Page -->
+    <div id="global-bg-wrapper" class="fixed inset-0 z-[-3] pointer-events-none overflow-hidden transition-opacity duration-500 opacity-100">
+        <!-- Extra tall background so it can scroll upwards safely without clipping -->
+        <div id="parallax-bg" class="absolute top-0 left-0 w-full h-[300vh] bg-cover bg-center will-change-transform" style="background-image: url('https://i.ibb.co/R4BPvKbL/chaitanya-nayak-beauty.jpg');"></div>
+        <!-- Overlays to ensure readability across all sections -->
+        <div class="absolute inset-0 bg-bgDark/60"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-bgDark/40 to-bgDark/95"></div>
+    </div>
+
+    <!-- Ambient Background Orbs for Glassmorphism -->
+    <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
+        <div class="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-accent/10 blur-[120px] md:blur-[150px]"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-zinc-600/10 blur-[120px] md:blur-[150px]"></div>
+        <div class="absolute top-[40%] left-[60%] w-[30%] h-[30%] rounded-full bg-zinc-800/20 blur-[100px]"></div>
+    </div>
+
+    <nav class="fixed top-0 w-full z-40 bg-black/20 backdrop-blur-xl border-b border-white/5 px-6 py-4 md:px-12 transition-all">
+        <div class="flex justify-between items-center max-w-7xl mx-auto">
+            <a href="#" onclick="navigateTo('home-view')" id="nav-name" class="text-white text-sm tracking-widest uppercase font-medium hover:text-zinc-400 transition-colors">
+                Chaitanya Nayak
+            </a>
+            <div class="flex gap-6 text-sm tracking-wider uppercase">
+                <a href="#" onclick="navigateTo('home-view')" class="hover:text-white transition-colors">Work</a>
+                <a href="#about" class="hover:text-white transition-colors hidden sm:block">About</a>
+                <a href="mailto:placeholder@email.com" class="hover:text-white transition-colors">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <div id="home-view" class="relative block opacity-100 transition-opacity duration-500">
+        
+        <!-- Introduction Section -->
+        <header class="pt-32 pb-12 px-6 md:px-12 max-w-7xl mx-auto flex flex-col items-center text-center">
+            <p id="hero-role" class="text-zinc-500 text-sm tracking-[0.2em] uppercase mb-4">Game Designer</p>
+            <h1 id="hero-headline" class="text-3xl md:text-5xl lg:text-6xl font-serif text-white leading-tight mb-8 max-w-3xl">
+                I turn game ideas into systems you can play, test, and improve.
+            </h1>
+            <div class="flex gap-6 justify-center">
+                <a href="#projects" class="px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-all text-xs uppercase tracking-wider rounded-md inline-flex items-center justify-center gap-2 font-medium shadow-[0_0_15px_rgba(255,255,255,0.05)]">
+                    View Projects <i class="ph ph-arrow-down"></i>
+                </a>
+                <a href="#" class="px-6 py-3 bg-black/20 backdrop-blur-md border border-white/10 hover:bg-white/10 text-white transition-all text-xs uppercase tracking-wider rounded-md inline-flex items-center justify-center gap-2">
+                    Resume <i class="ph ph-arrow-up-right"></i>
+                </a>
+            </div>
+        </header>
+
+        <!-- Unified Project Browser (Combines Preview & Cards) -->
+        <section id="projects" class="px-6 md:px-12 w-full max-w-7xl mx-auto mb-40 md:mb-48 mt-8">
+            <div id="project-browser-area" class="relative w-full flex flex-col min-h-[55vh] md:min-h-[60vh]">
+                
+                <!-- Background Container (Clips the backgrounds to the rounded corners) -->
+                <div class="absolute inset-0 rounded-[2rem] border border-white/10 bg-white/5 backdrop-blur-2xl overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.4)] z-0 pointer-events-none">
+                    <!-- Dynamic Background Layers (Spans behind both preview text and cards) -->
+                    <div id="browser-bg-default" class="absolute inset-0 img-placeholder opacity-50 transition-opacity duration-700 mix-blend-overlay"></div>
+                    <div id="browser-bg-active" class="absolute inset-0 bg-black/40 opacity-0 transition-opacity duration-700">
+                        <!-- Placeholder for the active card's full background artwork -->
+                        <div class="absolute inset-0 img-placeholder mix-blend-overlay opacity-40"></div>
+                    </div>
+                    
+                    <!-- Gradient Overlay: Fades to dark at the bottom to ground the cards -->
+                    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-black/40 to-black/80"></div>
+                </div>
+
+                <!-- Foreground Content Area -->
+                <div class="relative flex-1 flex flex-col z-10">
+                    
+                    <!-- Top Half: Preview Info Area -->
+                    <div class="relative flex-1 px-6 pt-6 pb-2 md:px-10 md:pt-10 md:pb-4 flex flex-col justify-center items-center min-h-[320px] md:min-h-[360px]">
+                        
+                        <!-- Default State -->
+                        <div id="preview-default" class="absolute inset-0 transition-opacity duration-500 opacity-100 flex flex-col justify-center items-center text-center z-10">
+                            <i class="ph ph-cards text-5xl text-zinc-600 mb-4"></i>
+                            <p class="text-zinc-400 font-medium tracking-wider uppercase text-sm">Select a project</p>
+                        </div>
+                        
+                        <!-- Active Hover State (75/25 Layout) -->
+                        <div id="preview-active" class="absolute inset-0 px-6 pt-6 pb-2 md:px-10 md:pt-10 md:pb-4 flex flex-col md:flex-row gap-6 md:gap-8 opacity-0 pointer-events-none transition-opacity duration-500 z-20">
+                            
+                            <!-- Left: Video/Photo/Cover (75%) -->
+                            <div class="w-full md:w-3/4 h-full rounded-xl overflow-hidden border border-white/10 bg-black/20 backdrop-blur-md relative shadow-lg group">
+                                <!-- Dynamic Media Placeholder -->
+                                <div class="absolute inset-0 img-placeholder opacity-80 mix-blend-screen transition-transform duration-700 group-hover:scale-105"></div>
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                                <div class="absolute bottom-4 left-4 flex gap-2">
+                                    <span class="px-2 py-1 bg-black/60 backdrop-blur-md rounded text-[10px] uppercase tracking-widest text-zinc-300 border border-white/10 flex items-center gap-1">
+                                        <i class="ph-fill ph-play-circle text-sm"></i> Gameplay Footage
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <!-- Right: Title, Text, Button (25%) -->
+                            <div class="w-full md:w-1/4 flex flex-col justify-between text-left h-full py-1">
+                                <div>
+                                    <h3 id="preview-title" class="text-2xl md:text-3xl font-serif text-white mb-2 drop-shadow-lg leading-tight">[Project Title]</h3>
+                                    <p id="preview-focus" class="text-accent text-[10px] tracking-[0.2em] uppercase mb-4 drop-shadow-md">[Focus Area]</p>
+                                    <p id="preview-desc" class="text-zinc-300 text-xs md:text-sm leading-relaxed drop-shadow-md">
+                                        [Project description dynamically populates here.]
+                                    </p>
+                                </div>
+                                
+                                <button onclick="navigateFromPreview()" class="mt-4 w-full py-3 bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-all text-xs uppercase tracking-wider rounded-md inline-flex items-center justify-center gap-2 font-medium pointer-events-auto shadow-lg flex-shrink-0">
+                                    Explore Project <i class="ph ph-arrow-right"></i>
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Bottom Half: Cards Deck (Starts right below preview, overhangs edge) -->
+                    <div id="cards-deck" class="relative z-30 flex flex-row justify-center items-end group translate-y-10 md:translate-y-12">
+                        <!-- Project Cards are dynamically injected here by siteConfig -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-24 border-y border-white/5 bg-white/[0.02] backdrop-blur-sm">
+            <div class="px-6 md:px-12 max-w-7xl mx-auto">
+                <div class="flex flex-col md:flex-row justify-between items-baseline mb-6">
+                    <h2 class="text-2xl font-serif text-white">Secondary Creative Skills</h2>
+                    <p class="text-zinc-500 text-sm hidden md:block">Architectural Vis &bull; 3D Art &bull; Graphic Design</p>
+                </div>
+                
+                <p class="text-zinc-400 font-light max-w-2xl mb-12">
+                    Beyond game design, I have hands-on experience in 3D modelling, architectural visualization, texturing, lighting, graphic design, photo and video editing. These skills allow me to take ideas beyond documentation, communicate visual concepts effectively, and contribute directly to different stages of production.
+                </p>
+                
+                <div id="skills-grid" class="flex flex-wrap gap-4 items-start mb-4">
+            <!-- Skill Cards are dynamically injected here by siteConfig -->
+        </div>
+
+        <!-- Detailed Dynamic Section (Hidden by default, triggered by clicking a card) -->
+        <div id="skill-detail-section" class="hidden opacity-0 transition-opacity duration-500 rounded-[2rem] border border-white/10 bg-white/5 backdrop-blur-2xl p-6 md:p-8 mt-12 shadow-[0_8px_32px_rgba(0,0,0,0.4)] relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-black/60 pointer-events-none"></div>
+            <div class="relative flex flex-col md:flex-row gap-8 h-full z-10">
+                
+                <!-- Media View (75%) -->
+                <div class="w-full md:w-3/4 aspect-video rounded-xl overflow-hidden border border-white/10 bg-black/40 backdrop-blur-md relative shadow-lg group">
+                    <div id="skill-detail-media" class="absolute inset-0 img-placeholder opacity-60 mix-blend-screen transition-transform duration-700 group-hover:scale-105"></div>
+                    <span class="absolute bottom-4 left-4 px-2 py-1 bg-black/60 backdrop-blur-md rounded text-[10px] uppercase tracking-widest text-zinc-300 border border-white/10 flex items-center gap-1">
+                        <i class="ph-fill ph-images text-sm"></i> Media Gallery
+                    </span>
+                </div>
+                
+                <!-- Text Description (25%) -->
+                        <div class="w-full md:w-1/4 flex flex-col justify-center text-left py-2">
+                            <h3 id="skill-detail-title" class="text-2xl md:text-3xl font-serif text-white mb-2 leading-tight drop-shadow-lg">[Skill Title]</h3>
+                            <div class="w-8 h-px bg-accent mb-4"></div>
+                            <p id="skill-detail-desc" class="text-zinc-400 text-sm leading-relaxed">
+                                [Skill description dynamically populates here based on the selected card.]
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="about" class="px-6 md:px-12 py-32 max-w-7xl mx-auto">
+            <div class="max-w-3xl">
+                <h2 class="text-sm tracking-[0.2em] uppercase text-zinc-500 mb-6">About & Contact</h2>
+                <p id="about-bio" class="text-xl md:text-2xl text-zinc-300 font-light leading-relaxed mb-12">
+                    [Brief biography highlighting your background.]
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 border-t border-white/10 pt-12">
+                    <div>
+                        <h3 class="text-white font-medium mb-4">Experience</h3>
+                        <ul id="experience-list" class="space-y-4 text-sm text-zinc-400">
+                            <!-- Experience injected here -->
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-white font-medium mb-4">Let's Connect</h3>
+                        <div id="contact-links" class="flex flex-col gap-3 text-sm">
+                            <!-- Links injected here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <footer id="site-footer" class="text-center py-8 text-zinc-500 text-xs tracking-wider">
+            &copy; 2024 Your Name.
+        </footer>
+    </div>
+
+    <div id="project-view" class="hidden opacity-0 transition-opacity duration-500 min-h-screen pb-32 relative">
+        
+        <!-- Minimal Case Study Navigation -->
+        <div class="sticky top-0 w-full z-30 bg-black/20 backdrop-blur-xl border-b border-white/5 px-6 py-4">
+            <div class="max-w-5xl mx-auto flex justify-between items-center">
+                <button onclick="navigateTo('home-view')" class="text-sm uppercase tracking-wider text-zinc-400 hover:text-white transition-colors flex items-center gap-2 group">
+                    <i class="ph ph-arrow-left group-hover:-translate-x-1 transition-transform"></i> Index
+                </button>
+                <span class="cs-label text-xs text-zinc-600 tracking-widest uppercase hidden sm:block">Case Study</span>
+            </div>
+        </div>
+
+        <div class="max-w-5xl mx-auto px-6 md:px-12 pt-16">
+            
+            <!-- Project Header & Main Media Wrapper -->
+            <div id="cs-intro-wrapper" class="flex flex-col">
+                <!-- Project Header -->
+                <header id="cs-header" class="mb-16">
+                    <h1 id="case-study-title" class="cs-heading text-4xl md:text-6xl font-serif text-white mb-6">[Project Title]</h1>
+                    
+                    <!-- Project Pitch -->
+                    <p id="case-study-pitch" class="text-xl md:text-2xl text-zinc-300 font-light leading-relaxed mb-12">
+                        [Short Pitch: A 1-2 sentence compelling summary of the game and its core gameplay hook.]
+                    </p>
+
+                    <!-- Key Project Details -->
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 py-8 border-y border-white/10">
+                        <div class="md:col-span-3">
+                            <span class="cs-label block text-zinc-600 text-xs uppercase tracking-wider mb-2">Role</span>
+                            <span id="case-study-role" class="text-sm text-zinc-200 font-medium">[Your Exact Role]</span>
+                        </div>
+                        <div class="md:col-span-3">
+                            <span class="cs-label block text-zinc-600 text-xs uppercase tracking-wider mb-2">Status</span>
+                            <span id="case-study-status" class="text-sm text-zinc-200 font-medium">[Released / In Development]</span>
+                        </div>
+                        <div class="md:col-span-6">
+                            <span class="cs-label block text-zinc-600 text-xs uppercase tracking-wider mb-2">Contributions</span>
+                            <span id="case-study-contributions" class="text-sm text-zinc-400 leading-relaxed">[Contributions]</span>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Main Media / Gameplay Footage -->
+                <section id="cs-main-media" class="mb-20 rounded-xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl aspect-video flex items-center justify-center relative group img-placeholder">
+                    <div class="absolute inset-0 flex flex-col items-center justify-center text-zinc-400 bg-black/50 backdrop-blur-sm transition-colors group-hover:bg-black/30 z-10">
+                        <i class="ph ph-play-circle text-5xl mb-4 group-hover:scale-110 group-hover:text-white transition-all cursor-pointer"></i>
+                        <span class="text-xs uppercase tracking-widest">[Main Gameplay Video Placeholder]</span>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Case Study Content Body -->
+            <article id="cs-content-body" class="grid grid-cols-1 md:grid-cols-12 gap-12">
+                
+                <!-- Left Sidebar (Challenges & Links) -->
+                <div id="cs-sidebar" class="md:col-span-4 space-y-12">
+                    <div>
+                        <h3 class="cs-heading text-xl font-serif text-white mb-6">The Challenge</h3>
+                        <div id="case-study-challenge" class="text-zinc-400 font-light text-sm leading-relaxed space-y-4">
+                            <!-- Challenge paragraphs injected here -->
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="cs-heading text-white font-medium mb-4">Key Links</h3>
+                        <ul class="space-y-3">
+                            <li>
+                                <a href="#" class="text-sm text-zinc-400 hover:text-white transition-colors inline-flex items-center gap-2">
+                                    <i class="ph ph-link"></i> Playable Build (Itch.io)
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="text-sm text-zinc-400 hover:text-white transition-colors inline-flex items-center gap-2">
+                                    <i class="ph ph-file-pdf"></i> Economy Balance Sheet
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Right Main Content (Evidence & Reasoning) -->
+                <div id="cs-main" class="md:col-span-8 space-y-12">
+                    
+                    <div>
+                        <h2 class="cs-heading text-2xl font-serif text-white mb-6">Designing the Solution</h2>
+                        <div id="case-study-solution" class="text-zinc-300 leading-relaxed space-y-6">
+                            <!-- Solution paragraphs injected here -->
+                        </div>
+                    </div>
+
+                    <!-- Evidence / Diagram Placeholder -->
+                    <figure id="cs-evidence-placeholder" class="rounded-lg border border-white/10 bg-white/5 backdrop-blur-md p-4 img-placeholder relative min-h-[300px] flex items-center justify-center shadow-lg">
+                        <span class="cs-label text-zinc-400 text-xs uppercase tracking-widest bg-black/60 px-3 py-1 rounded backdrop-blur-md border border-white/10">[System Diagram / Blueprint Screenshot]</span>
+                    </figure>
+
+                    <div>
+                        <h2 class="cs-heading text-2xl font-serif text-white mb-6">Iteration & Results</h2>
+                        <div id="case-study-iteration" class="text-zinc-300 leading-relaxed space-y-6">
+                            <!-- Iteration paragraphs injected here -->
+                        </div>
+                    </div>
+
+                    <!-- Results / Lessons Callout -->
+                    <div class="bg-white/5 backdrop-blur-lg border border-white/10 rounded-lg p-8 shadow-lg">
+                        <h4 class="cs-heading text-white font-medium mb-4">Lessons Learned</h4>
+                        <div id="case-study-lessons">
+                            <!-- Lessons injected here dynamically (List or Grid) -->
+                        </div>
+                    </div>
+
+                </div>
+            </article>
+        </div>
+    </div>
+
+    <script>
+        const siteConfig = {
+            personal: {
+                name: "Chaitanya Nayak",
+                role: "Game Designer",
+                headline: "I turn game ideas into systems you can play, test, and improve.",
+                bio: "I am an analytical and creative game designer with experience in system architecture, player psychology, and cross-discipline collaboration. Previously at Studio X and Studio Y.",
+                email: "placeholder@email.com",
+                linkedinUrl: "https://linkedin.com/",
+                resumeUrl: "resume.pdf",
+                artstationUrl: "https://chaitanya_nayak.artstation.com/",
+                copyright: "&copy; 2024 Chaitanya Nayak."
+            },
+            experience: [
+                { role: "Lead Systems Designer", company: "Studio Name", period: "2021 &mdash; Present" },
+                { role: "Game Designer", company: "Studio Name", period: "2018 &mdash; 2021" }
+            ],
+            projects: [
+                {
+                    id: "project-alpha",
+                    title: "Ultimate Gunship",
+                    theme: "steampunk",
+                    status: "Prototype",
+                    focus: "Roguelike Mechanics",
+                    previewDesc: "Command a steampunk gunship with a rotating turret structure. Upgrade your turrets, adapt your firepower, and survive through roguelike encounters.",
+                    pitch: "What if your entire arsenal revolved around your ship? Ultimate Gunship puts you in command of a steampunk warship built around a unique rotating turret structure. Combine roguelike turret upgrades with directional firepower to develop new combat strategies and turn your flying fortress into a weapon of your own design.",
+                    caseStudy: {
+                        layout: "full_width",
+                        role: "Game Designer & Developer",
+                        status: "In-development prototype",
+                        contributions: "Game design and development, art design and development, level design",
+                        challenge: [
+                            "The project began with a gameplay concept I had designed during my previous role at a game development company. After the project was canceled, I wanted to preserve its most distinctive idea a rotating turret structure that could engage enemies approaching from multiple directions while creating an entirely new game around it.",
+                            "Working independently presented two major challenges: adapting the concept to the limitations of solo development and making its combat work in a way that felt convincing rather than dated. The original idea of enemies occupying fixed positions around the player worked for ground-based combat, but aircraft hovering in place would undermine the believability of the new setting.",
+                            "I also needed to create enough strategic depth and progression to make repeated runs engaging without overwhelming mobile players with complicated controls."
+                        ],
+                        solution: [
+                            {
+                                type: "side_by_side",
+                                items: [
+                                    {
+                                        text: ["I rebuilt the concept around a massive steampunk gunship travelling between locations while defending itself against waves of enemies. This new setting allowed me to use aircraft for moving enemies and enormous air balloons for enemies designed to remain in position, letting each enemy type work naturally within the combat system."],
+                                        media: { type: "image", url: "https://i.ibb.co/RpYbQztC/canvas-Game-flow-261017-0301.png" }
+                                    },
+                                    {
+                                        text: ["To make moving aircraft work with the rotating turret structure, I designed and implemented a lane-based movement system, enemy spawning rules, and slot management to prevent enemies from overlapping or competing for the same space. I also developed a configurable wave system, allowing me to build and modify encounters without individually coding every wave or level."],
+                                        media: { type: "image", url: "https://i.ibb.co/cXKcq6mF/wave-spawn-queue-flow.png" }
+                                    },
+                                    {
+                                        text: ["For progression, I combined turret upgrades, random level-up power-ups, rarity tiers, and occasional shops. Each run begins with limited firepower, giving players opportunities to build a stronger arsenal and adapt their choices to the enemies ahead. I also designed distinct enemy and boss types, each serving a specific gameplay purpose."],
+                                        media: { type: "image", url: "https://i.ibb.co/m555WDQB/mermaid-diagram-1.png" }
+                                    },
+                                    {
+                                        text: ["The level structure draws inspiration from classic games where players travel through distinct worlds on their way toward a larger goal. This gives the combat a broader sense of progression beyond simply surviving successive waves."]
+                                    }
+                                ]
+                            }
+                        ],
+                        iteration: [
+                            {
+                                type: "side_by_side",
+                                items: [
+                                    {
+                                        text: [
+                                            "During my own testing, I noticed that the combat became less engaging during quieter moments, particularly early in a run when enemies might approach from only one direction. The player could be waiting for the next meaningful interaction instead of actively participating in the fight.",
+                                            "I addressed this by adding a centrally controlled turret that gives the player a more immediate way to engage enemies. Since the game was designed for mobile, I introduced a simplified target-locking system that lets players select targets without requiring precise aiming. When left alone, the turret automatically acquires and attacks enemies, allowing the game to remain playable without constant manual input."
+                                        ],
+                                        media: { type: "image", url: "https://i.ibb.co/FRT0XdJ/mermaid-diagram.png" }
+                                    },
+                                    {
+                                        text: [
+                                            "The result is a combat system that combines directional turret management, moving enemy formations, automated targeting, and optional direct player intervention. The configurable wave and enemy systems also provide a foundation for expanding the game's encounters without rebuilding the underlying systems.",
+                                            "Future expansion includes balancing the economy, expanding the turret arsenal and turret evolutions, adding more variety in central turrets as well as its own upgrades, and developing additional levels, enemies, and bosses."
+                                        ]
+                                    }
+                                ]
+                            }
+                        ],
+                        lessons: [
+                            "Ultimate Gunship taught me to design around actual production constraints rather than treating them as problems to solve later. Changing the setting helped resolve animation limitations while giving the game a more coherent identity.",
+                            "Designing the lane, spawning, and slot systems together also allowed me to address several enemy-movement problems through a unified approach.",
+                            "Most importantly, developing the game independently pushed me beyond designing mechanics on paper. I had to consider how systems would be implemented, how they would interact, and how to make them configurable for future content. The experience strengthened my ability to translate a gameplay vision into working systems while making practical trade-offs between design ambition, development effort, and player experience."
+                        ]
+                    }
+                },
+                {
+                    id: "project-beta",
+                    title: "Peace by Pieces",
+                    theme: "peace",
+                    status: "Playable Prototype",
+                    focus: "Shop Management & Strategy",
+                    previewDesc: "Craft ridiculous weapons, sell them to rival armies, and manipulate the war through prices and product availability.",
+                    pitch: "Run a weapon shop, sell to both sides, manipulate the war economy, and make sure nobody wins. Peace by Pieces is a lighthearted comedy shop simulator where you manufacture and sell weapons to opposing armies. The core tension: helping one side can prevent the other from winning, but allowing either side to become too powerful can end your business.",
+                    caseStudy: {
+                        layout: "full_width",
+                        mainMediaUrl: "[INSERT_PEACE_GAMEPLAY_VIDEO_HERE.mp4]",
+                        role: "Solo Designer, Developer & Artist",
+                        status: "Playable Prototype / In Development",
+                        contributions: "Game Design, Systems Architecture, AI Programming, 3D Art & Animation",
+                        challenge: [
+                            { type: "heading", text: "The Central Design Idea" },
+                            "The player crafts and sells weapons. Generals make purchasing decisions based on their budgets and battlefield situation. Armies fight automatically, territory changes hands, and those changes influence future income and purchasing power. The player manipulates prices and availability to influence the next battle.",
+                            {
+                                type: "html",
+                                content: `
+                                <div class="flex flex-col md:flex-row justify-center items-center gap-3 py-10">
+                                    <div class="bg-[#27272a] border-4 border-[#3f3f46] rounded-2xl p-4 text-center w-full md:w-40 shadow-[4px_4px_0px_rgba(0,0,0,0.3)]">
+                                        <i class="ph-fill ph-storefront text-4xl text-amber-400 mb-2 drop-shadow-md"></i>
+                                        <p class="font-bold text-xs text-white uppercase tracking-wider">Shop & Pricing</p>
+                                    </div>
+                                    <i class="ph-bold ph-arrow-right text-2xl text-zinc-500 hidden md:block"></i>
+                                    <i class="ph-bold ph-arrow-down text-2xl text-zinc-500 block md:hidden"></i>
+                                    <div class="bg-blue-950 border-4 border-blue-900 rounded-2xl p-4 text-center w-full md:w-40 shadow-[4px_4px_0px_rgba(30,58,138,0.5)]">
+                                        <i class="ph-fill ph-brain text-4xl text-blue-400 mb-2 drop-shadow-md"></i>
+                                        <p class="font-bold text-xs text-white uppercase tracking-wider">AI Buying</p>
+                                    </div>
+                                    <i class="ph-bold ph-arrow-right text-2xl text-zinc-500 hidden md:block"></i>
+                                    <i class="ph-bold ph-arrow-down text-2xl text-zinc-500 block md:hidden"></i>
+                                    <div class="bg-red-950 border-4 border-red-900 rounded-2xl p-4 text-center w-full md:w-40 shadow-[4px_4px_0px_rgba(153,27,27,0.5)]">
+                                        <i class="ph-fill ph-sword text-4xl text-red-400 mb-2 drop-shadow-md"></i>
+                                        <p class="font-bold text-xs text-white uppercase tracking-wider">Automated Battles</p>
+                                    </div>
+                                    <i class="ph-bold ph-arrow-right text-2xl text-zinc-500 hidden md:block"></i>
+                                    <i class="ph-bold ph-arrow-down text-2xl text-zinc-500 block md:hidden"></i>
+                                    <div class="bg-[#27272a] border-4 border-[#3f3f46] rounded-2xl p-4 text-center w-full md:w-40 shadow-[4px_4px_0px_rgba(0,0,0,0.3)]">
+                                        <i class="ph-fill ph-map-trifold text-4xl text-green-400 mb-2 drop-shadow-md"></i>
+                                        <p class="font-bold text-xs text-white uppercase tracking-wider">Territory & Income</p>
+                                    </div>
+                                </div>
+                                `
+                            },
+                            { type: "heading", text: "The Interconnected Systems" },
+                            {
+                                type: "side_by_side",
+                                items: [
+                                    {
+                                        text: [
+                                            "<strong class='text-white text-lg block mb-2'>The Shop & Production System</strong>",
+                                            "The player begins with a small shop, crafting basic weapons and physically moving resources and finished products. Shop upgrades unlock more advanced machines, additional production capabilities, and larger units requiring assembly.",
+                                            "Physical shop management and production bottlenecks directly impact the player's economic decisions and response times."
+                                        ],
+                                        media: { type: "image", url: "https://placehold.co/800x600/27272a/fbbf24?text=Shop+Layout+Screenshot" }
+                                    },
+                                    {
+                                        text: [
+                                            "<strong class='text-white text-lg block mb-2'>Generals & Automated Warfare</strong>",
+                                            "Each opposing general manages a budget, evaluates the battlefield, chooses units, and prepares orders. Soldiers fight autonomously using their own combat behaviors and target priorities.",
+                                            "These decisions turn the player's shop and pricing choices into immediate battlefield consequences."
+                                        ],
+                                        media: { type: "image", url: "https://placehold.co/800x600/1e3a8a/60a5fa?text=General+AI+UI" }
+                                    },
+                                    {
+                                        text: [
+                                            "<strong class='text-white text-lg block mb-2'>The Battlefield & Territory</strong>",
+                                            "The battlefield is a strategic space where armies fight automatically and territory changes hands. Territory control affects the resources available to each side and creates a snowball effect as the stronger side gains more income."
+                                        ],
+                                        media: { type: "image", url: "https://placehold.co/800x600/7f1d1d/f87171?text=Tactical+Map+View" }
+                                    },
+                                    {
+                                        text: [
+                                            "<strong class='text-white text-lg block mb-2'>The Economy & Trust System</strong>",
+                                            "Players can set weapon prices, refuse orders, help a weaker side recover, or charge a stronger side more. However, generals can lose trust, restrict resource access, and purchase from competing local shops. Economic manipulation creates both opportunities and consequences."
+                                        ]
+                                    }
+                                ]
+                            }
+                        ],
+                        solution: [
+                            { type: "heading", text: "Design Challenges & Solutions" },
+                            "Developing a complex, interconnected simulation meant I repeatedly encountered exploits or flat gameplay loops. Here is how I addressed the most critical design problems.",
+                            {
+                                type: "html",
+                                content: `
+                                <div class="grid grid-cols-1 gap-8 mt-10">
+                                    
+                                    <!-- Challenge 1 -->
+                                    <div class="bg-[#27272a] rounded-2xl border-4 border-[#3f3f46] p-6 md:p-8 shadow-[6px_6px_0px_rgba(0,0,0,0.3)]">
+                                        <h4 class="text-xl font-bold text-white mb-6 flex items-center gap-3"><i class="ph-fill ph-coin text-amber-400"></i> Preventing Economic Exploitation</h4>
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                            <div class="bg-red-950/40 border-2 border-red-900/60 rounded-xl p-5">
+                                                <span class="text-red-400 font-bold text-[10px] uppercase tracking-widest mb-2 block flex items-center gap-2"><i class="ph-bold ph-warning-circle"></i> Initial Problem</span>
+                                                <p class="text-sm text-zinc-300">A player could push one side close to the enemy base and then exploit its desperation by charging extremely high prices.</p>
+                                            </div>
+                                            <div class="bg-blue-950/40 border-2 border-blue-900/60 rounded-xl p-5">
+                                                <span class="text-blue-400 font-bold text-[10px] uppercase tracking-widest mb-2 block flex items-center gap-2"><i class="ph-bold ph-wrench"></i> My Solution</span>
+                                                <p class="text-sm text-zinc-300">I introduced an opinion/trust system for each general. Overcharging or missing orders reduces trust. Low trust restricts resource access and causes the general to rely on local shops instead.</p>
+                                            </div>
+                                            <div class="bg-amber-950/20 border-2 border-amber-900/40 rounded-xl p-5">
+                                                <span class="text-amber-400 font-bold text-[10px] uppercase tracking-widest mb-2 block flex items-center gap-2"><i class="ph-bold ph-target"></i> Design Impact</span>
+                                                <p class="text-sm text-zinc-300">The player must balance short-term profit against long-term business relationships, creating a meaningful trade-off rather than just a reputation bar.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Challenge 2 -->
+                                    <div class="bg-[#27272a] rounded-2xl border-4 border-[#3f3f46] p-6 md:p-8 shadow-[6px_6px_0px_rgba(0,0,0,0.3)]">
+                                        <h4 class="text-xl font-bold text-white mb-6 flex items-center gap-3"><i class="ph-fill ph-brain text-amber-400"></i> Meaningful AI Purchasing</h4>
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                            <div class="bg-red-950/40 border-2 border-red-900/60 rounded-xl p-5">
+                                                <span class="text-red-400 font-bold text-[10px] uppercase tracking-widest mb-2 block flex items-center gap-2"><i class="ph-bold ph-warning-circle"></i> Initial Problem</span>
+                                                <p class="text-sm text-zinc-300">The initial general AI would simply purchase the strongest available units, making purchasing decisions predictable and the strategic layer flat.</p>
+                                            </div>
+                                            <div class="bg-blue-950/40 border-2 border-blue-900/60 rounded-xl p-5">
+                                                <span class="text-blue-400 font-bold text-[10px] uppercase tracking-widest mb-2 block flex items-center gap-2"><i class="ph-bold ph-wrench"></i> My Solution</span>
+                                                <p class="text-sm text-zinc-300">I gave units three strategic roles: attack, defense, and siege. Generals evaluate the roles needed for their current situation and compare units according to their value-per-price for that role.</p>
+                                            </div>
+                                            <div class="bg-amber-950/20 border-2 border-amber-900/40 rounded-xl p-5">
+                                                <span class="text-amber-400 font-bold text-[10px] uppercase tracking-widest mb-2 block flex items-center gap-2"><i class="ph-bold ph-target"></i> Design Impact</span>
+                                                <p class="text-sm text-zinc-300">The shopping list becomes a dynamic response to changing battlefield needs instead of a simple preference for the strongest unit.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Challenge 3 -->
+                                    <div class="bg-[#27272a] rounded-2xl border-4 border-[#3f3f46] p-6 md:p-8 shadow-[6px_6px_0px_rgba(0,0,0,0.3)]">
+                                        <h4 class="text-xl font-bold text-white mb-6 flex items-center gap-3"><i class="ph-fill ph-users text-amber-400"></i> Solving the Cheap-Unit Exploit</h4>
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                            <div class="bg-red-950/40 border-2 border-red-900/60 rounded-xl p-5">
+                                                <span class="text-red-400 font-bold text-[10px] uppercase tracking-widest mb-2 block flex items-center gap-2"><i class="ph-bold ph-warning-circle"></i> Initial Problem</span>
+                                                <p class="text-sm text-zinc-300">The revised AI began favoring large numbers of cheap units because their combined role value was more attractive than that of expensive units.</p>
+                                            </div>
+                                            <div class="bg-blue-950/40 border-2 border-blue-900/60 rounded-xl p-5">
+                                                <span class="text-blue-400 font-bold text-[10px] uppercase tracking-widest mb-2 block flex items-center gap-2"><i class="ph-bold ph-wrench"></i> My Solution</span>
+                                                <p class="text-sm text-zinc-300">I introduced troop transport capacity. Units require different numbers of seats in a transport truck, forcing the general to consider both unit value and transport limits.</p>
+                                            </div>
+                                            <div class="bg-amber-950/20 border-2 border-amber-900/40 rounded-xl p-5">
+                                                <span class="text-amber-400 font-bold text-[10px] uppercase tracking-widest mb-2 block flex items-center gap-2"><i class="ph-bold ph-target"></i> Design Impact</span>
+                                                <p class="text-sm text-zinc-300">The AI must optimize within a physical capacity constraint rather than selecting units using price and combat value alone.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Challenge 4 -->
+                                    <div class="bg-[#27272a] rounded-2xl border-4 border-[#3f3f46] p-6 md:p-8 shadow-[6px_6px_0px_rgba(0,0,0,0.3)]">
+                                        <h4 class="text-xl font-bold text-white mb-6 flex items-center gap-3"><i class="ph-fill ph-bug-beetle text-amber-400"></i> Debugging Autonomous Behavior</h4>
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                            <div class="bg-red-950/40 border-2 border-red-900/60 rounded-xl p-5">
+                                                <span class="text-red-400 font-bold text-[10px] uppercase tracking-widest mb-2 block flex items-center gap-2"><i class="ph-bold ph-warning-circle"></i> Initial Problem</span>
+                                                <p class="text-sm text-zinc-300">Soldiers sometimes froze while switching targets or failed to attack the targets they were supposed to prioritize.</p>
+                                            </div>
+                                            <div class="bg-blue-950/40 border-2 border-blue-900/60 rounded-xl p-5">
+                                                <span class="text-blue-400 font-bold text-[10px] uppercase tracking-widest mb-2 block flex items-center gap-2"><i class="ph-bold ph-wrench"></i> My Solution</span>
+                                                <p class="text-sm text-zinc-300">I reworked the soldier system and gave each unit its own behavior tree derived from three main archetypes: melee, ranged, and siege.</p>
+                                            </div>
+                                            <div class="bg-amber-950/20 border-2 border-amber-900/40 rounded-xl p-5">
+                                                <span class="text-amber-400 font-bold text-[10px] uppercase tracking-widest mb-2 block flex items-center gap-2"><i class="ph-bold ph-target"></i> Design Impact</span>
+                                                <p class="text-sm text-zinc-300">The combat logic became structured around distinct behavior types, giving each class a clearer basis for handling its role reliably.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Challenge 5 -->
+                                    <div class="bg-[#27272a] rounded-2xl border-4 border-[#3f3f46] p-6 md:p-8 shadow-[6px_6px_0px_rgba(0,0,0,0.3)]">
+                                        <h4 class="text-xl font-bold text-white mb-6 flex items-center gap-3"><i class="ph-fill ph-cpu text-amber-400"></i> Performance vs Combat Experience</h4>
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                            <div class="bg-red-950/40 border-2 border-red-900/60 rounded-xl p-5">
+                                                <span class="text-red-400 font-bold text-[10px] uppercase tracking-widest mb-2 block flex items-center gap-2"><i class="ph-bold ph-warning-circle"></i> Initial Problem</span>
+                                                <p class="text-sm text-zinc-300">Large numbers of soldiers created massive technical optimization challenges and unreadable chaos.</p>
+                                            </div>
+                                            <div class="bg-blue-950/40 border-2 border-blue-900/60 rounded-xl p-5">
+                                                <span class="text-blue-400 font-bold text-[10px] uppercase tracking-widest mb-2 block flex items-center gap-2"><i class="ph-bold ph-wrench"></i> My Solution</span>
+                                                <p class="text-sm text-zinc-300">I reduced the sheer number of soldiers to focus on readable combat. On the technical side, I learned and implemented object pooling.</p>
+                                            </div>
+                                            <div class="bg-amber-950/20 border-2 border-amber-900/40 rounded-xl p-5">
+                                                <span class="text-amber-400 font-bold text-[10px] uppercase tracking-widest mb-2 block flex items-center gap-2"><i class="ph-bold ph-target"></i> Design Impact</span>
+                                                <p class="text-sm text-zinc-300">Optimization involved both changing the experience's scale for better gameplay and improving the code implementation.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Challenge 6 -->
+                                    <div class="bg-[#27272a] rounded-2xl border-4 border-[#3f3f46] p-6 md:p-8 shadow-[6px_6px_0px_rgba(0,0,0,0.3)]">
+                                        <h4 class="text-xl font-bold text-white mb-6 flex items-center gap-3"><i class="ph-fill ph-paint-brush text-amber-400"></i> Art Style & Production Constraints</h4>
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                            <div class="bg-red-950/40 border-2 border-red-900/60 rounded-xl p-5">
+                                                <span class="text-red-400 font-bold text-[10px] uppercase tracking-widest mb-2 block flex items-center gap-2"><i class="ph-bold ph-warning-circle"></i> Initial Problem</span>
+                                                <p class="text-sm text-zinc-300">As a solo designer, developer, and artist, I needed an art style that was distinctive but practical to create at scale.</p>
+                                            </div>
+                                            <div class="bg-blue-950/40 border-2 border-blue-900/60 rounded-xl p-5">
+                                                <span class="text-blue-400 font-bold text-[10px] uppercase tracking-widest mb-2 block flex items-center gap-2"><i class="ph-bold ph-wrench"></i> My Solution</span>
+                                                <p class="text-sm text-zinc-300">I settled on cute bird-like soldiers with tiny legs and floating arms. Their exaggerated appearance reduces modeling and animation complexity.</p>
+                                            </div>
+                                            <div class="bg-amber-950/20 border-2 border-amber-900/40 rounded-xl p-5">
+                                                <span class="text-amber-400 font-bold text-[10px] uppercase tracking-widest mb-2 block flex items-center gap-2"><i class="ph-bold ph-target"></i> Design Impact</span>
+                                                <p class="text-sm text-zinc-300">The constraint became part of the game's identity, making their serious military behavior funny through visual contrast.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Challenge 7 -->
+                                    <div class="bg-[#27272a] rounded-2xl border-4 border-[#3f3f46] p-6 md:p-8 shadow-[6px_6px_0px_rgba(0,0,0,0.3)]">
+                                        <h4 class="text-xl font-bold text-white mb-6 flex items-center gap-3"><i class="ph-fill ph-trend-up text-amber-400"></i> Keeping Earlier Tiers Relevant</h4>
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                            <div class="bg-red-950/40 border-2 border-red-900/60 rounded-xl p-5">
+                                                <span class="text-red-400 font-bold text-[10px] uppercase tracking-widest mb-2 block flex items-center gap-2"><i class="ph-bold ph-warning-circle"></i> Initial Problem</span>
+                                                <p class="text-sm text-zinc-300">Standard progression often introduces stronger capabilities that make everything from earlier tiers completely useless.</p>
+                                            </div>
+                                            <div class="bg-blue-950/40 border-2 border-blue-900/60 rounded-xl p-5">
+                                                <span class="text-blue-400 font-bold text-[10px] uppercase tracking-widest mb-2 block flex items-center gap-2"><i class="ph-bold ph-wrench"></i> My Solution</span>
+                                                <p class="text-sm text-zinc-300">I designed progression so early-tier units retain meaningful specific roles later in the game. Machines and production systems also remain useful as the shop expands.</p>
+                                            </div>
+                                            <div class="bg-amber-950/20 border-2 border-amber-900/40 rounded-xl p-5">
+                                                <span class="text-amber-400 font-bold text-[10px] uppercase tracking-widest mb-2 block flex items-center gap-2"><i class="ph-bold ph-target"></i> Design Impact</span>
+                                                <p class="text-sm text-zinc-300">Progression expands the player's capabilities and strategic options instead of merely replacing old numbers with higher ones.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                `
+                            }
+                        ],
+                        iteration: [
+                            { type: "heading", text: "Iteration & Development Process" },
+                            "How the project evolved from its initial concept into an interconnected simulation.",
+                            {
+                                type: "timeline",
+                                stages: [
+                                    {
+                                        title: "1. Initial concept",
+                                        content: "Started as a straightforward Overcooked-inspired weapon shop, with the war largely abstracted."
+                                    },
+                                    {
+                                        title: "2. Scope expansion",
+                                        content: "The project moved toward a PC simulation with autonomous armies and more visible battlefield consequences."
+                                    },
+                                    {
+                                        title: "3. System development",
+                                        content: "I developed the general AI, daily economy, combat behaviors, territory capture, troop roles, and purchasing logic.",
+                                        media: { type: "image", url: "https://placehold.co/800x600/27272a/fbbf24?text=System+Development" }
+                                    },
+                                    {
+                                        title: "4. Exploit discovery",
+                                        content: "Testing revealed that generals could make overly simplistic purchases and that players could exploit the economy."
+                                    },
+                                    {
+                                        title: "5. System iteration",
+                                        content: "I added trust consequences, role-based unit evaluation, and transport-capacity constraints to fix the exploits."
+                                    },
+                                    {
+                                        title: "6. Technical refinement",
+                                        content: "I reworked soldier behavior logic and used object pooling to address development and performance problems."
+                                    }
+                                ]
+                            },
+                            { type: "heading", text: "Art Direction & Production Design" },
+                            {
+                                type: "side_by_side",
+                                items: [
+                                    {
+                                        text: [
+                                            "The visual style was built around strict production constraints, using cute, exaggerated bird-like soldiers to contrast with their serious military behavior.",
+                                            "This involved comically inventive weapons, machines designed for different crafting stages, and a tiered shop that grows in physical size while adhering to the principle that early-game machines remain relevant."
+                                        ],
+                                        media: { type: "image", url: "https://placehold.co/800x450/27272a/fbbf24?text=Bird+Soldier+Concepts" }
+                                    }
+                                ]
+                            }
+                        ],
+                        lessons: [
+                            {
+                                icon: "ph-gears",
+                                title: "Systems Design",
+                                text: "Successfully connected shop production, economics, AI purchasing, combat, territory, and trust into a cohesive feedback loop."
+                            },
+                            {
+                                icon: "ph-brain",
+                                title: "AI Decision Design",
+                                text: "Moved from simplistic strongest-unit purchasing to role-based decisions constrained by budget and physical transport capacity."
+                            },
+                            {
+                                icon: "ph-shield-warning",
+                                title: "Exploit Prevention",
+                                text: "Discovered degenerate strategies in testing and added consequences (like the Trust system) to create meaningful trade-offs."
+                            },
+                            {
+                                icon: "ph-bug-beetle",
+                                title: "Iteration & Debugging",
+                                text: "Reworked soldier behavior logic from scratch using behavior trees to refine systems through repeated testing."
+                            },
+                            {
+                                icon: "ph-cpu",
+                                title: "Technical Problem-Solving",
+                                text: "Learned and implemented object pooling while intentionally reducing unnecessary combat scale to improve performance and readability."
+                            },
+                            {
+                                icon: "ph-paint-brush",
+                                title: "Art Direction & Scope",
+                                text: "Found a distinctive character style that serves both the game's humor and the practical limitations of solo asset production."
+                            },
+                            {
+                                icon: "ph-trend-up",
+                                title: "Progression Design",
+                                text: "Maintained the strategic usefulness of earlier units, machines, and resources even as the game scope expanded."
+                            }
+                        ]
+                    }
+                },
+                {
+                    id: "project-gamma",
+                    title: "Divine Shells",
+                    status: "Prototype",
+                    focus: "Narrative Design & Roguelite",
+                    previewDesc: "Play as a debug program fighting corrupted AI inside a futuristic system. Upgrade between runs, push deeper, and uncover the source of the corruption.",
+                    pitch: "A technologically advanced system has fallen to corruption, and you're the debug program sent to fight back. In Divine Shells, battle corrupted AI, explore the system's depths, and prepare for each new attempt by upgrading your program after death. Every run is another chance to overcome stronger threats, uncover hidden mysteries, and get closer to eliminating the corruption at its source.",
+                    caseStudy: {
+                        role: "Narrative Designer",
+                        status: "Prototype",
+                        contributions: "Worldbuilding, dialogue, branching narrative structures.",
+                        challenge: ["Placeholder text for project challenge."],
+                        solution: ["Placeholder text for project solution."],
+                        iteration: ["Placeholder text for iteration."],
+                        lessons: ["Placeholder lesson 1.", "Placeholder lesson 2."]
+                    }
+                },
+                {
+                    id: "project-delta",
+                    title: "Track Legends",
+                    theme: "racing",
+                    status: "Prototype",
+                    focus: "Gameplay Mechanics",
+                    previewDesc: "A portrait racing prototype exploring how precise throttle, braking, and steering could work on a small touchscreen without losing the satisfaction of simulation-style driving.",
+                    pitch: "A portrait racing prototype exploring how precise throttle, braking, and steering could work on a small touchscreen without losing the satisfaction of simulation-style driving.",
+                    caseStudy: {
+                        layout: "editorial",
+                        mainMediaUrl: "[INSERT_MAIN_PROTOTYPE_VIDEO_URL_HERE.mp4]",
+                        role: "Game Designer & Artist",
+                        status: "Playable prototype; development discontinued",
+                        contributions: "Game concept, controls design, driving-feel iteration, gameplay testing, 3D car art, and visual direction.",
+                        challenge: [
+                            { type: "heading", text: "Where the Idea Came From" },
+                            "The idea came while we were playing EA SPORTS F1 25. I wondered whether I could drive an F1-style car casually with one hand during spare moments instead of doom-scrolling.",
+                            "The intended experience: a portrait mobile racing game with accessible controls but meaningful throttle, braking, steering, and lap-time improvement. The original scope was a single-player time-passing game, without multiplayer or strategy systems.",
+                            { type: "heading", text: "The Design Challenge" },
+                            {
+                                type: "challenge_cards",
+                                cards: [
+                                    { title: "One-Thumb Simulation", text: "Making simulation-inspired driving work with one thumb." },
+                                    { title: "Portrait Constraints", text: "Fitting throttle, braking, and steering into limited portrait-screen space." },
+                                    { title: "Judging Speed & Corners", text: "Helping players judge speed and corners with a top-down camera and little physical feedback." },
+                                    { title: "Believable yet Accessible", text: "Making the car feel believable without making the controls frustrating." }
+                                ]
+                            }
+                        ],
+                        solution: [
+                            {
+                                type: "timeline",
+                                stages: [
+                                    {
+                                        title: "Stage A — Exploring control schemes",
+                                        solves: "Portrait Constraints & One-Thumb Simulation",
+                                        content: "We explored several driving-control methods before narrowing the prototype down to two options: a vertical throttle/brake lever paired with a horizontal steering lever, and a combined joystick (horizontal axis for steering, vertical for acceleration/braking). We repeatedly tested and iterated on both to find a balance between precision, responsiveness, and ease of use.",
+                                        media: { type: "image", orientation: "portrait", url: "[INSERT_CONTROL_SCHEME_VISUAL_HERE.jpg]" }
+                                    },
+                                    {
+                                        title: "Stage B — Establishing the driving model",
+                                        solves: "Believable yet Accessible",
+                                        content: "We built a prototype around an F1-style car and an Australian Grand Prix circuit asset, scaling the environment to real-world dimensions and tuning the car's speed and handling. The goal was to establish believable driving despite the limited view and input precision of a portrait touchscreen, rather than settling for basic arcade steering."
+                                    },
+                                    {
+                                        title: "Stage C — Tuning steering and braking",
+                                        solves: "Judging Speed & Corners",
+                                        content: "To address the problem of excessive turning at high speed and the difficulty of judging corners top-down, we developed hidden assists. Steering response decreased at higher speeds and was reduced while braking. This encouraged a deliberate rhythm: brake before the corner, turn with controlled inputs, then accelerate out.",
+                                        media: { type: "video", orientation: "portrait", url: "[INSERT_HANDLING_VIDEO_URL_HERE.mp4]" }
+                                    },
+                                    {
+                                        title: "Stage D — Testing and comparison",
+                                        content: "We repeatedly tested the driving model and refined it based on corner handling and acceleration. We also compared a prototype lap against footage from an F1 25 qualifying lap. This wasn't to match visual fidelity, but to evaluate whether our simplified mobile experience could reproduce a convincing sense of speed and deliberate car control based on our observations.",
+                                        media: { type: "video", orientation: "landscape", heading: "One Driving Concept, Two Perspectives", caption: "A prototype lap compared with F1 25 footage. This side-by-side comparison illustrates our attempt to reproduce similar driving rhythm and lap performance through a top-down mobile control scheme.", url: "[INSERT_COMPARISON_VIDEO_URL_HERE.mp4]" }
+                                    },
+                                    {
+                                        title: "Stage E — Prototype outcome",
+                                        content: "Through repeated testing, we reached a point where a good run produced lap times and a driving rhythm comparable to our reference footage. The playable prototype demonstrated that simulation-inspired driving could be adapted to a mobile-friendly format. Development stopped when our developer had to leave the project after getting a job, leaving planned features uncompleted."
+                                    }
+                                ]
+                            }
+                        ],
+                        iteration: [
+                            { type: "heading", text: "What We Planned Next" },
+                            "The prototype focused on driving, so our next step would have been to build a progression and competitive experience around it.",
+                            { type: "html", content: "<ul class='list-disc pl-5 space-y-4 text-zinc-400 mb-4'><li><strong>Campaign and skill progression:</strong> Qualifying sessions and races would act as training, with players unlocking multiplayer after earning a completion badge by achieving acceptable results across the tracks.</li><li><strong>Skill-based multiplayer:</strong> Players of similar ability would compete through qualifying sessions followed by races, with pit stops offering opportunities to repair damage and replenish boost.</li><li><strong>Slipstream-based boost:</strong> Following another car would charge a boost resource faster, while braking would also contribute to its recharge. Players could then spend the stored charge for a temporary speed advantage.</li><li><strong>More content:</strong> Additional tracks, cars, customisation options, DRS-inspired mechanics, and optional racing guides for more casual players.</li><li><strong>Sponsorship-based monetisation:</strong> We also explored a sponsorship-based monetisation model. Instead of relying primarily on paid skins or gameplay advantages, businesses could sponsor in-game placements such as car decals and trackside billboards for a fixed period.</li></ul>" },
+                            { type: "heading", text: "A Vision for In-Game Sponsorship" },
+                            "I created a custom 3D show car to demonstrate how company logos and sponsorship decals could look on a vehicle. This was a visual exploration of the proposed sponsorship model, not a live sponsorship system.",
+                            { type: "image", url: "[INSERT_SHOW_CAR_IMAGE_URL_HERE.jpg]" }
+                        ],
+                        lessons: [
+                            {
+                                icon: "ph-device-mobile",
+                                title: "Design for the Device",
+                                text: "A portrait touchscreen forced us to rethink familiar racing inputs. <strong class='text-zinc-100 font-medium'>A control scheme isn't successful just because it functions; it must consistently produce the intended driving experience</strong> despite severe physical constraints."
+                            },
+                            {
+                                icon: "ph-path",
+                                title: "Iterate on Feel",
+                                text: "Functionality alone doesn't create a believable racer. We found that <strong class='text-zinc-100 font-medium'>small adjustments to steering curves, braking strength, and acceleration drastically changed cornering behavior</strong> and established the driving rhythm."
+                            },
+                            {
+                                icon: "ph-steering-wheel",
+                                title: "Invisible Assists",
+                                text: "We implemented hidden handling adjustments, like speed-dependent steering and reduced turning response during braking. These <strong class='text-zinc-100 font-medium'>preserved meaningful driving decisions without demanding impossible precision</strong> from a single thumb."
+                            },
+                            {
+                                icon: "ph-stopwatch",
+                                title: "Compare to Validate",
+                                text: "Rather than guessing if the game felt fast, we used our reference footage to evaluate speed and braking distances. <strong class='text-zinc-100 font-medium'>Connecting our tuning to the side-by-side video comparison grounded the design in observable performance.</strong>"
+                            },
+                            {
+                                icon: "ph-flag-checkered",
+                                title: "Foundation First",
+                                text: "It is tempting to build meta-systems early to make a prototype feel complete. By resisting this, <strong class='text-zinc-100 font-medium'>we fully established the core driving foundation before attempting to tackle multiplayer, progression, or monetisation.</strong>"
+                            }
+                        ]
+                    }
+                },
+                {
+                    id: "project-lost-sky",
+                    title: "Project Lost Sky",
+                    status: "Prototype",
+                    focus: "Action & World Building",
+                    previewDesc: "A single-player action game set in a post-apocalyptic world. Leave the safety of home to explore strange lands, encounter bizarre creatures, uncover the past, and discover powerful weapon upgrades.",
+                    pitch: "Beyond the safety of her home lies a world shaped by a forgotten past, filled with bizarre creatures, hidden discoveries, and dangers waiting to be understood. In Project Lost Sky, follow a lone protagonist as she ventures into the unknown, uncovering the world's history while discovering weapon upgrades and facing threats through a distinctive combat system. Part of a larger story from a book I'm writing, the game brings this world to life through exploration, action, and discovery.",
+                    caseStudy: {
+                        role: "Lead Designer",
+                        status: "Prototype",
+                        contributions: "Worldbuilding, combat system design, level layout.",
+                        challenge: ["Placeholder text for project challenge."],
+                        solution: ["Placeholder text for project solution."],
+                        iteration: ["Placeholder text for iteration."],
+                        lessons: ["Placeholder lesson 1.", "Placeholder lesson 2."]
+                    }
+                }
+            ],
+            skills: [
+                { 
+                    title: "3D Art", 
+                    desc: "Skills: 3D modelling, texturing, materials, lighting, rendering and animation.",
+                    thumbImage: "https://i.ibb.co/V0CPtppG/ny-cafe-1.jpg",
+                    previewImage: "https://i.ibb.co/8gRTVGxj/collage.jpg"
+                },
+                { 
+                    title: "Architectural Visualization", 
+                    desc: "Skills: Interior and exterior visualization, SketchUp modelling, architectural lighting and rendering.",
+                    thumbImage: "https://i.ibb.co/ZyMhSn9/chaitanya-nayak-bunglow.jpg",
+                    previewImage: "https://i.ibb.co/Xkx2Jcnm/shape-Collage.png"
+                },
+                { 
+                    title: "Game Environments", 
+                    desc: "Skills: Environment presentation, scene composition, lighting and real-time rendering.",
+                    thumbImage: "https://i.ibb.co/7xGq7pgD/chaitanya-nayak-ruins3.jpg",
+                    previewVideo: "assets/your-video-file.mp4" // <-- REPLACE THIS LINK WITH YOUR OWN .MP4 URL
+                },
+                { 
+                    title: "Video Editing & Motion Graphics", 
+                    desc: "Skills: Video editing, green-screen compositing, rotoscoping, clean plating, advertisement graphics and title animation.",
+                    thumbImage: "https://i.ibb.co/N2LBh0By/Screenshot-5.png",
+                    previewImage: "https://i.ibb.co/N2LBh0By/Screenshot-5.png"
+                },
+                { 
+                    title: "Graphic Design & Digital Imaging", 
+                    desc: "Skills: Logo design, image restoration and colorization, digital painting, color grading, image manipulation and cover design.",
+                    thumbImage: "https://i.ibb.co/Z0hjwMc/chaitanya-nayak-magazine-covers-2.jpg",
+                    previewImage: "https://i.ibb.co/Z0hjwMc/chaitanya-nayak-magazine-covers-2.jpg"
+                }
+            ]
+        };
+
+        function buildSiteFromConfig() {
+            // 1. Populate Text Nodes
+            if(document.getElementById('nav-name')) document.getElementById('nav-name').innerText = siteConfig.personal.name;
+            if(document.getElementById('hero-role')) document.getElementById('hero-role').innerText = siteConfig.personal.role;
+            if(document.getElementById('hero-headline')) document.getElementById('hero-headline').innerText = siteConfig.personal.headline;
+            if(document.getElementById('about-bio')) document.getElementById('about-bio').innerText = siteConfig.personal.bio;
+            if(document.getElementById('site-footer')) document.getElementById('site-footer').innerHTML = siteConfig.personal.copyright;
+
+            // 2. Populate Experience List
+            const expList = document.getElementById('experience-list');
+            if(expList) {
+                expList.innerHTML = siteConfig.experience.map(exp => `
+                    <li>
+                        <span class="block text-white">${exp.role}</span>
+                        ${exp.company} &bull; ${exp.period}
+                    </li>
+                `).join('');
+            }
+
+            // 3. Populate Contact Links
+            const contactContainer = document.getElementById('contact-links');
+            if(contactContainer) {
+                contactContainer.innerHTML = `
+                    <a href="mailto:${siteConfig.personal.email}" class="text-zinc-400 hover:text-white transition-colors inline-flex items-center gap-2">
+                        <i class="ph ph-envelope-simple text-lg"></i> Email Me
+                    </a>
+                    <a href="${siteConfig.personal.linkedinUrl}" target="_blank" rel="noopener noreferrer" class="text-zinc-400 hover:text-white transition-colors inline-flex items-center gap-2">
+                        <i class="ph ph-linkedin-logo text-lg"></i> LinkedIn
+                    </a>
+                    <a href="${siteConfig.personal.resumeUrl}" target="_blank" class="text-zinc-400 hover:text-white transition-colors inline-flex items-center gap-2">
+                        <i class="ph ph-file-text text-lg"></i> Download Resume (PDF)
+                    </a>
+                `;
+            }
+
+            // 4. Generate Project Cards Deck dynamically
+            const cardsDeck = document.getElementById('cards-deck');
+            if(cardsDeck) {
+                cardsDeck.innerHTML = siteConfig.projects.map((proj, i) => `
+                    <button 
+                        class="project-card relative flex-shrink-0 w-40 md:w-48 aspect-[2.5/3.5] text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-xl shadow-[0_8px_24px_rgba(0,0,0,0.6)] origin-bottom cursor-pointer ${i === 0 ? '' : '-ml-12 md:-ml-16'}"
+                        style="z-index: ${10 + i};"
+                        data-id="${proj.id}"
+                        data-title="${proj.title}"
+                        data-focus="${proj.focus}"
+                        data-desc="${proj.previewDesc}"
+                        data-pitch="${proj.pitch}"
+                        aria-label="View details for ${proj.title}"
+                    >
+                        <div class="absolute inset-0 img-placeholder opacity-60 mix-blend-overlay"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+                        <div class="absolute top-2 left-2 border border-white/20 bg-black/40 backdrop-blur-md px-2 py-0.5 rounded text-[9px] uppercase tracking-widest text-zinc-300">${proj.status}</div>
+                        <div class="absolute bottom-0 left-0 right-0 p-4">
+                            <h3 class="text-base font-serif text-white mb-0.5 leading-tight drop-shadow-md">${proj.title}</h3>
+                        </div>
+                    </button>
+                `).join('');
+            }
+
+            // 5. Generate Skill Cards & Explore Button
+            const skillsGrid = document.getElementById('skills-grid');
+            if(skillsGrid) {
+                const skillsHtml = siteConfig.skills.map(skill => {
+                    const thumbUrl = skill.thumbImage || skill.image || '';
+                    const previewUrl = skill.previewImage || skill.image || '';
+                    const bgStyle = thumbUrl ? `background-image: url('${thumbUrl}'); background-size: cover; background-position: center;` : '';
+                    const bgClass = thumbUrl ? 'opacity-40 group-hover:opacity-80' : 'img-placeholder opacity-20 group-hover:opacity-60';
+                    
+                    return `
+                    <button class="skill-card group relative w-full sm:w-[calc(50%-0.5rem)] lg:w-[calc(25%-0.75rem)] h-16 hover:h-64 transition-[height] duration-500 ease-in-out rounded-lg overflow-hidden border border-white/10 bg-white/5 backdrop-blur-md hover:bg-white/10 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent shadow-lg" data-title="${skill.title}" data-desc="${skill.desc}" data-image="${previewUrl}" data-video="${skill.previewVideo || ''}">
+                        <div class="absolute inset-0 ${bgClass} mix-blend-overlay transition-opacity duration-500" style="${bgStyle}"></div>
+                        <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/80 to-black pointer-events-none"></div>
+                        <div class="absolute top-0 left-0 w-full p-4 h-full pointer-events-none">
+                            <h3 class="text-white font-medium tracking-wide drop-shadow-md">${skill.title}</h3>
+                            <div class="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
+                                <p class="text-zinc-300 text-xs leading-relaxed drop-shadow-md">${skill.desc}</p>
+                                <span class="inline-block mt-4 text-accent text-[10px] uppercase tracking-widest font-medium drop-shadow-md">Click to view <i class="ph ph-caret-down align-middle"></i></span>
+                            </div>
+                        </div>
+                    </button>
+                    `;
+                }).join('');
+                
+                const exploreHtml = `
+                    <a href="${siteConfig.personal.artstationUrl}" target="_blank" rel="noopener noreferrer" class="group relative w-full sm:w-[calc(50%-0.5rem)] lg:w-[calc(25%-0.75rem)] h-16 rounded-lg overflow-hidden border border-white/10 bg-white/5 backdrop-blur-md hover:bg-white/10 hover:border-white/20 transition-all duration-300 text-left flex items-center justify-between px-4 shadow-lg">
+                        <span class="text-white font-medium tracking-wide">Explore More</span>
+                        <i class="ph ph-arrow-up-right text-zinc-400 group-hover:text-white group-hover:translate-x-1 group-hover:-translate-y-1 transition-all"></i>
+                    </a>
+                `;
+                skillsGrid.innerHTML = skillsHtml + exploreHtml;
+            }
+        }
+
+        // Run the builder immediately to populate the DOM
+        buildSiteFromConfig();
+
+        // State variables
+        let currentTargetProject = null;
+        const IS_TOUCH_DEVICE = window.matchMedia("(pointer: coarse)").matches;
+
+        // Elements
+        const projectCards = document.querySelectorAll('.project-card');
+        const cardsDeck = document.getElementById('cards-deck');
+        const projectBrowserArea = document.getElementById('project-browser-area');
+        
+        // Load Case Study Data helper
+        function loadCaseStudyData(projectId) {
+            const project = siteConfig.projects.find(p => p.id === projectId);
+            if (!project) return;
+
+            const titleEl = document.getElementById('case-study-title');
+            if (titleEl) titleEl.innerText = project.title;
+            
+            const pitchEl = document.getElementById('case-study-pitch');
+            if (pitchEl) pitchEl.innerText = project.pitch;
+
+            // Helper to render mixed content (paragraphs, images, headings, and video)
+            const renderMixedContent = (contentArray) => {
+                if (!contentArray) return '';
+                return contentArray.map(item => {
+                    if (typeof item === 'string') {
+                        return `<p>${item}</p>`;
+                    } else if (item && item.type === 'image') {
+                        const aspectClass = item.orientation === 'portrait' ? 'max-w-[300px]' : 'w-full';
+                        const marginClass = item._inline ? '' : 'my-8';
+                        return `<figure class="cs-image-container ${marginClass} rounded-xl border border-white/10 bg-white/5 backdrop-blur-md overflow-hidden shadow-lg ${aspectClass}">
+                                    <img src="${item.url}" alt="Project Illustration" class="w-full h-auto object-cover opacity-90 hover:opacity-100 transition-opacity duration-300">
+                                </figure>`;
+                    } else if (item && item.type === 'heading') {
+                        return `<h3 class="cs-heading text-xl font-serif text-white mt-10 mb-4">${item.text}</h3>`;
+                    } else if (item && item.type === 'html') {
+                        return item.content;
+                    } else if (item && item.type === 'video') {
+                        const aspectClass = item.orientation === 'portrait' ? 'aspect-[9/16] max-w-[300px]' : 'aspect-video w-full';
+                        const marginClass = item._inline ? '' : 'my-12';
+                        return `
+                        <div class="${marginClass} w-full flex flex-col items-center">
+                            ${item.heading ? `<h3 class="cs-heading text-2xl font-serif text-white mb-6 w-full text-left">${item.heading}</h3>` : ''}
+                            <figure class="cs-video-container rounded-xl border border-white/10 bg-white/5 backdrop-blur-md overflow-hidden shadow-lg relative flex items-center justify-center img-placeholder group ${aspectClass}">
+                                <video src="${item.url}" controls class="absolute inset-0 w-full h-full object-cover z-10" poster="https://placehold.co/1200x675/18181b/ffffff?text=Video+Placeholder"></video>
+                            </figure>
+                            ${item.caption ? `<p class="text-xs text-zinc-500 mt-4 italic w-full text-left">${item.caption}</p>` : ''}
+                        </div>`;
+                    } else if (item && item.type === 'challenge_cards') {
+                        return `<div class="grid grid-cols-1 gap-4 my-6">
+                            ${item.cards.map(card => `
+                                <div class="cs-challenge-card bg-white/5 border border-white/10 p-4 rounded-lg shadow-md border-l-2 border-l-accent relative overflow-hidden">
+                                    <div class="absolute -right-4 -top-4 text-white/5 font-serif text-6xl pointer-events-none select-none">?</div>
+                                    <h4 class="text-white font-medium text-sm mb-1 relative z-10">${card.title}</h4>
+                                    <p class="text-xs text-zinc-400 relative z-10">${card.text}</p>
+                                </div>
+                            `).join('')}
+                        </div>`;
+                    } else if (item && item.type === 'timeline') {
+                        return `<div class="cs-timeline-container relative border-l border-white/10 pl-6 md:pl-10 ml-3 md:ml-4 my-16 space-y-24">
+                            ${item.stages.map((stage, idx) => {
+                                const mediaAlign = idx % 2 === 0 ? 'md:justify-end' : 'md:justify-start';
+                                return `
+                                <div class="cs-timeline-stage relative flex flex-col md:grid md:grid-cols-2 md:gap-x-16 md:gap-y-6 md:items-start">
+                                    <div class="cs-timeline-marker absolute -left-[31px] md:-left-[47px] top-1.5 w-3 h-3 bg-accent rounded-full shadow-[0_0_10px_rgba(217,119,6,0.8)] border-2 border-bgDark"></div>
+                                    
+                                    ${idx % 2 === 0 ? `
+                                        <!-- Desktop: Text Left, Media Right -->
+                                        <div class="order-1 md:col-start-1 md:row-start-1">
+                                            <h4 class="cs-heading text-xl font-serif text-white mb-3 flex items-center flex-wrap gap-3">
+                                                ${stage.title}
+                                                ${stage.solves ? `<span class="cs-label text-[9px] font-sans uppercase tracking-widest bg-accent/20 text-accent border border-accent/30 px-2 py-0.5 rounded shadow-sm flex items-center gap-1"><i class="ph-fill ph-check-circle"></i> Solves: ${stage.solves}</span>` : ''}
+                                            </h4>
+                                        </div>
+                                        ${stage.media ? `
+                                        <div class="order-2 md:col-start-2 md:row-start-1 md:row-span-2 w-full flex justify-center ${mediaAlign} mb-8 md:mb-0">
+                                            ${renderMixedContent([{ ...stage.media, _inline: true }])}
+                                        </div>
+                                        ` : ''}
+                                        <div class="order-3 md:col-start-1 md:row-start-2 text-base text-zinc-400 leading-relaxed space-y-4">
+                                            <p>${stage.content}</p>
+                                        </div>
+                                    ` : `
+                                        <!-- Desktop: Media Left, Text Right -->
+                                        <div class="order-1 md:col-start-2 md:row-start-1">
+                                            <h4 class="cs-heading text-xl font-serif text-white mb-3 flex items-center flex-wrap gap-3">
+                                                ${stage.title}
+                                                ${stage.solves ? `<span class="cs-label text-[9px] font-sans uppercase tracking-widest bg-accent/20 text-accent border border-accent/30 px-2 py-0.5 rounded shadow-sm flex items-center gap-1"><i class="ph-fill ph-check-circle"></i> Solves: ${stage.solves}</span>` : ''}
+                                            </h4>
+                                        </div>
+                                        ${stage.media ? `
+                                        <div class="order-2 md:col-start-1 md:row-start-1 md:row-span-2 w-full flex justify-center ${mediaAlign} mb-8 md:mb-0">
+                                            ${renderMixedContent([{ ...stage.media, _inline: true }])}
+                                        </div>
+                                        ` : ''}
+                                        <div class="order-3 md:col-start-2 md:row-start-2 text-base text-zinc-400 leading-relaxed space-y-4">
+                                            <p>${stage.content}</p>
+                                        </div>
+                                    `}
+                                </div>
+                                `;
+                            }).join('')}
+                        </div>`;
+                    } else if (item && item.type === 'side_by_side') {
+                        return `<div class="steampunk-pipe-container flex flex-col gap-12 my-12 relative">
+                            ${item.items.map((row, idx) => {
+                                const isEven = idx % 2 === 0;
+                                const textOrder = isEven ? 'md:order-1' : 'md:order-2';
+                                const mediaOrder = isEven ? 'md:order-2' : 'md:order-1';
+                                
+                                const textContent = Array.isArray(row.text) 
+                                    ? row.text.map(p => `<p class="mb-4 last:mb-0">${p}</p>`).join('')
+                                    : (row.text ? `<p>${row.text}</p>` : '');
+                                    
+                                return `
+                                <div class="steampunk-node flex flex-col md:grid md:grid-cols-2 gap-8 md:gap-16 items-center">
+                                    <div class="w-full ${textOrder} flex flex-col justify-center">
+                                        ${textContent}
+                                    </div>
+                                    ${row.media ? `
+                                    <div class="w-full ${mediaOrder} flex justify-center">
+                                        ${renderMixedContent([{ ...row.media, _inline: true }])}
+                                    </div>
+                                    ` : `
+                                    <div class="hidden md:block w-full ${mediaOrder}"></div>
+                                    `}
+                                </div>
+                                `;
+                            }).join('')}
+                        </div>`;
+                    }
+                    return '';
+                }).join('');
+            };
+
+            // Populate Meta Info
+            if (project.caseStudy) {
+                const roleEl = document.getElementById('case-study-role');
+                if (roleEl) roleEl.innerText = project.caseStudy.role;
+                
+                const statusEl = document.getElementById('case-study-status');
+                if (statusEl) statusEl.innerText = project.caseStudy.status;
+                
+                const contributionsEl = document.getElementById('case-study-contributions');
+                if (contributionsEl) contributionsEl.innerText = project.caseStudy.contributions;
+
+                // Handle Dynamic Layout (Editorial vs Default)
+                const articleBody = document.getElementById('cs-content-body');
+                const sidebar = document.getElementById('cs-sidebar');
+                const mainContent = document.getElementById('cs-main');
+                const introWrapper = document.getElementById('cs-intro-wrapper');
+                const header = document.getElementById('cs-header');
+                const mainMediaSection = document.getElementById('cs-main-media');
+                const evidencePlaceholder = document.getElementById('cs-evidence-placeholder');
+
+                if (project.caseStudy.layout === 'editorial' || project.caseStudy.layout === 'full_width') {
+                    // Switch to spacious full-width flow
+                    if(articleBody) {
+                        articleBody.classList.remove('md:grid-cols-12');
+                        articleBody.classList.add('flex', 'flex-col', 'gap-16');
+                    }
+                    if(sidebar) {
+                        sidebar.classList.remove('md:col-span-4');
+                    }
+                    if(mainContent) {
+                        mainContent.classList.remove('md:col-span-8');
+                    }
+                } else {
+                    // Restore Classic Grid 
+                    if(articleBody) {
+                        articleBody.classList.add('md:grid-cols-12');
+                        articleBody.classList.remove('flex', 'flex-col', 'gap-16');
+                    }
+                    if(sidebar) {
+                        sidebar.classList.add('md:col-span-4');
+                    }
+                    if(mainContent) {
+                        mainContent.classList.add('md:col-span-8');
+                    }
+                }
+
+                if (project.caseStudy.layout === 'editorial') {
+                    // Split Intro (Track Legends - Portrait side-by-side)
+                    if(introWrapper) {
+                        introWrapper.classList.add('md:flex-row', 'md:gap-16', 'md:items-start');
+                        introWrapper.classList.remove('flex-col', 'md:gap-12', 'md:items-center');
+                    }
+                    if(header) {
+                        header.classList.remove('mb-16', 'md:w-1/2');
+                        header.classList.add('md:w-3/5', 'mb-8', 'md:mb-0');
+                    }
+                    
+                    // Format Portrait Main Media
+                    if(mainMediaSection) {
+                        mainMediaSection.classList.remove('mb-20', 'aspect-video', 'w-full', 'md:w-1/2');
+                        mainMediaSection.classList.add('md:w-2/5', 'aspect-[9/16]', 'w-full', 'max-w-[320px]', 'mx-auto', 'md:mx-0', 'mb-8', 'md:mb-0');
+                    }
+
+                    // Hide placeholder diagrams for editorial
+                    if(evidencePlaceholder) evidencePlaceholder.style.display = 'none';
+
+                } else if (project.caseStudy.layout === 'full_width') {
+                    // Split Intro (Ultimate Gunship - Landscape side-by-side)
+                    if(introWrapper) {
+                        introWrapper.classList.add('md:flex-row', 'md:gap-12', 'md:items-center');
+                        introWrapper.classList.remove('flex-col', 'md:gap-16', 'md:items-start');
+                    }
+                    if(header) {
+                        header.classList.remove('mb-16', 'md:w-3/5');
+                        header.classList.add('md:w-1/2', 'mb-8', 'md:mb-0');
+                    }
+                    
+                    // Format Landscape Main Media (Side-by-side)
+                    if(mainMediaSection) {
+                        mainMediaSection.classList.remove('mb-20', 'aspect-[9/16]', 'max-w-[320px]', 'md:w-2/5');
+                        mainMediaSection.classList.add('w-full', 'md:w-1/2', 'aspect-video', 'mx-auto', 'md:mx-0', 'mb-8', 'md:mb-0');
+                    }
+
+                    // Hide placeholder diagram for full_width
+                    if(evidencePlaceholder) evidencePlaceholder.style.display = 'none';
+                    
+                } else {
+                    // Restore Stacked Intro (Classic)
+                    if(introWrapper) {
+                        introWrapper.classList.remove('md:flex-row', 'md:gap-16', 'md:gap-12', 'md:items-start', 'md:items-center');
+                        introWrapper.classList.add('flex-col');
+                    }
+                    if(header) {
+                        header.classList.add('mb-16');
+                        header.classList.remove('md:w-3/5', 'md:w-1/2', 'mb-8', 'md:mb-0');
+                    }
+                    
+                    // Format Landscape Main Media
+                    if(mainMediaSection) {
+                        mainMediaSection.classList.add('mb-20', 'aspect-video', 'w-full');
+                        mainMediaSection.classList.remove('md:w-2/5', 'md:w-1/2', 'aspect-[9/16]', 'max-w-[320px]', 'mx-auto', 'md:mx-0', 'mb-8', 'md:mb-0');
+                    }
+
+                    if(evidencePlaceholder) evidencePlaceholder.style.display = 'flex';
+                }
+
+                // Handle Main Media Video Injection
+                if (mainMediaSection) {
+                    if (project.caseStudy.mainMediaUrl) {
+                        mainMediaSection.innerHTML = `
+                            <video src="${project.caseStudy.mainMediaUrl}" controls autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover z-10" poster="https://placehold.co/720x1280/18181b/ffffff?text=Gameplay+Video"></video>
+                        `;
+                        mainMediaSection.classList.remove('img-placeholder');
+                    } else {
+                        // Restore default placeholder if no video
+                        mainMediaSection.innerHTML = `
+                            <div class="absolute inset-0 flex flex-col items-center justify-center text-zinc-400 bg-black/50 backdrop-blur-sm transition-colors group-hover:bg-black/30 z-10">
+                                <i class="ph ph-play-circle text-5xl mb-4 group-hover:scale-110 group-hover:text-white transition-all cursor-pointer"></i>
+                                <span class="text-xs uppercase tracking-widest">[Main Gameplay Video Placeholder]</span>
+                            </div>
+                        `;
+                        mainMediaSection.classList.add('img-placeholder');
+                    }
+                }
+
+                // Populate Paragraphs & Images dynamically with null checks
+                const challengeElem = document.getElementById('case-study-challenge');
+                if (challengeElem) challengeElem.innerHTML = renderMixedContent(project.caseStudy.challenge);
+                
+                const solutionElem = document.getElementById('case-study-solution');
+                if (solutionElem) solutionElem.innerHTML = renderMixedContent(project.caseStudy.solution);
+                
+                const iterationElem = document.getElementById('case-study-iteration');
+                if (iterationElem) iterationElem.innerHTML = renderMixedContent(project.caseStudy.iteration);
+                
+                // Populate Lessons (Handles both old string arrays and new card objects)
+                const lessonsContainer = document.getElementById('case-study-lessons');
+                if (project.caseStudy.lessons.length > 0 && typeof project.caseStudy.lessons[0] === 'string') {
+                    lessonsContainer.innerHTML = `<ul class="list-disc pl-5 space-y-3 text-zinc-300 text-sm marker:text-zinc-500">` + 
+                        project.caseStudy.lessons.map(l => `<li>${l}</li>`).join('') + 
+                        `</ul>`;
+                } else if (project.caseStudy.lessons.length > 0) {
+                    lessonsContainer.innerHTML = `<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">` + 
+                        project.caseStudy.lessons.map((card, idx) => `
+                            <div class="cs-lesson-card bg-black/20 border border-white/5 p-5 rounded-lg relative overflow-hidden group ${idx === 4 ? 'md:col-span-1 md:col-start-1 md:row-start-3 lg:col-span-2' : ''}">
+                                <i class="ph ${card.icon} text-6xl text-white/[0.03] absolute -right-2 -bottom-2 group-hover:text-white/[0.06] transition-colors group-hover:scale-110 duration-500 pointer-events-none"></i>
+                                <h5 class="text-white font-medium text-sm mb-3 flex items-center gap-2 relative z-10">
+                                    <i class="ph-fill ${card.icon} text-accent text-lg"></i> ${card.title}
+                                </h5>
+                                <p class="text-xs text-zinc-400 leading-relaxed relative z-10">${card.text}</p>
+                            </div>
+                        `).join('') + 
+                        `</div>`;
+                }
+            }
+            
+            // Cleanly apply the specific project theme (if it exists)
+            const projectView = document.getElementById('project-view');
+            if (projectView) {
+                // Convert to array first so removing classes doesn't break the loop
+                Array.from(projectView.classList).forEach(className => {
+                    if (className.startsWith('theme-')) {
+                        projectView.classList.remove(className);
+                    }
+                });
+                if (project.theme) {
+                    projectView.classList.add('theme-' + project.theme);
+                }
+            }
+        }
+
+        // Preview Elements
+        const previewDefault = document.getElementById('preview-default');
+        const previewActive = document.getElementById('preview-active');
+        const previewTitle = document.getElementById('preview-title');
+        const previewFocus = document.getElementById('preview-focus');
+        const previewDesc = document.getElementById('preview-desc');
+        const browserBgActive = document.getElementById('browser-bg-active');
+        const browserBgDefault = document.getElementById('browser-bg-default');
+
+        // Initial z-index cache to restore layer order
+        const baseZIndexes = Array.from(projectCards).map((_, i) => 10 + i);
+
+        // Helper to update the preview panel with card data
+        function updateInlinePreview(card) {
+            const id = card.getAttribute('data-id');
+            const title = card.getAttribute('data-title');
+            const focus = card.getAttribute('data-focus');
+            const desc = card.getAttribute('data-desc');
+            const pitch = card.getAttribute('data-pitch');
+
+            currentTargetProject = { id, title, focus, desc, pitch };
+
+            // Update textual content
+            if (previewTitle) previewTitle.innerText = title;
+            if (previewFocus) previewFocus.innerText = focus;
+            if (previewDesc) previewDesc.innerText = desc;
+
+            // Toggle visibility classes
+            if (previewDefault) {
+                previewDefault.classList.replace('opacity-100', 'opacity-0');
+                previewDefault.classList.add('pointer-events-none');
+            }
+            if (previewActive) {
+                previewActive.classList.replace('opacity-0', 'opacity-100');
+                previewActive.classList.remove('pointer-events-none');
+            }
+            if (browserBgActive) browserBgActive.classList.replace('opacity-0', 'opacity-100');
+        }
+
+        // Helper to reset the preview panel to the default prompt
+        function resetInlinePreview() {
+            currentTargetProject = null;
+
+            if (previewDefault) {
+                previewDefault.classList.replace('opacity-0', 'opacity-100');
+                previewDefault.classList.remove('pointer-events-none');
+            }
+            if (previewActive) {
+                previewActive.classList.replace('opacity-100', 'opacity-0');
+                previewActive.classList.add('pointer-events-none');
+            }
+            if (browserBgActive) browserBgActive.classList.replace('opacity-100', 'opacity-0');
+        }
+
+        if (!IS_TOUCH_DEVICE) {
+            // Apply MacBook Dock Hover Effect
+            projectCards.forEach((card, hoveredIndex) => {
+                card.addEventListener('mouseenter', () => {
+                    
+                    // 1. Calculate Dock Lift Effect
+                    projectCards.forEach((siblingCard, siblingIndex) => {
+                        const distance = Math.abs(hoveredIndex - siblingIndex);
+                        
+                        // Lift configuration (Max lift: 55px, decays by 20px per card away)
+                        const maxLift = 55;
+                        const decay = 20;
+                        const liftAmount = Math.max(0, maxLift - (distance * decay));
+                        
+                        // Z-index calculation: the hovered card gets the highest, tapering off
+                        const dynamicZIndex = 50 - distance;
+
+                        // Apply transforms
+                        siblingCard.style.transform = `translateY(-${liftAmount}px)`;
+                        siblingCard.style.zIndex = dynamicZIndex;
+                        
+                        // Brighten hovered card, subtly dim others
+                        if (distance === 0) {
+                            siblingCard.style.filter = 'brightness(1.1)';
+                            siblingCard.style.borderColor = '#d97706'; // Accent color border
+                        } else {
+                            siblingCard.style.filter = 'brightness(0.6)';
+                            siblingCard.style.borderColor = '#3f3f46';
+                        }
+                    });
+
+                    // 2. Update Inline Preview
+                    updateInlinePreview(card);
+                });
+            });
+
+            // Reset Deck transforms when mouse leaves the cards area
+            cardsDeck.addEventListener('mouseleave', () => {
+                projectCards.forEach((card, i) => {
+                    card.style.transform = `translateY(0px)`;
+                    card.style.zIndex = baseZIndexes[i];
+                    
+                    // Keep the active card highlighted if the preview is still open
+                    if (currentTargetProject && card.getAttribute('data-id') === currentTargetProject.id) {
+                        card.style.filter = 'brightness(1.1)';
+                        card.style.borderColor = '#d97706';
+                    } else {
+                        card.style.filter = 'brightness(0.6)';
+                        card.style.borderColor = '#3f3f46';
+                    }
+                });
+            });
+
+            // Reset entire preview when mouse leaves the whole section
+            if (projectBrowserArea) {
+                projectBrowserArea.addEventListener('mouseleave', () => {
+                    resetInlinePreview();
+                    // Fully reset all cards to default appearance
+                    projectCards.forEach((card) => {
+                        card.style.filter = 'brightness(1)';
+                        card.style.borderColor = '#3f3f46';
+                    });
+                });
+            }
+        }
+
+        // Secondary Skills Interactive Logic
+        const skillCards = document.querySelectorAll('.skill-card');
+        const skillDetailSection = document.getElementById('skill-detail-section');
+        const skillDetailTitle = document.getElementById('skill-detail-title');
+        const skillDetailDesc = document.getElementById('skill-detail-desc');
+        const skillDetailMedia = document.getElementById('skill-detail-media');
+
+        skillCards.forEach(card => {
+            card.addEventListener('click', () => {
+                // Populate data from the clicked card
+                skillDetailTitle.innerText = card.getAttribute('data-title');
+                skillDetailDesc.innerText = card.getAttribute('data-desc');
+                
+                // Update the media background if an image exists
+                const imageUrl = card.getAttribute('data-image');
+                const videoUrl = card.getAttribute('data-video');
+                
+                if (skillDetailMedia) {
+                    // Clear out any previous video elements
+                    skillDetailMedia.innerHTML = '';
+                    
+                    if (videoUrl) {
+                        // Using native HTML5 video for autoplaying background loops
+                        skillDetailMedia.style.backgroundImage = `url('${imageUrl || ''}')`;
+                        skillDetailMedia.style.backgroundSize = 'cover';
+                        skillDetailMedia.style.backgroundPosition = 'center';
+                        skillDetailMedia.classList.remove('img-placeholder');
+                        
+                        skillDetailMedia.innerHTML = `
+                            <video 
+                                src="${videoUrl}" 
+                                autoplay 
+                                loop 
+                                muted 
+                                playsinline 
+                                class="absolute inset-0 w-full h-full object-cover z-0">
+                            </video>
+                            <div class="absolute inset-0 bg-black/10 pointer-events-none z-10"></div>
+                        `;
+                    } else if (imageUrl) {
+                        skillDetailMedia.style.backgroundImage = `url('${imageUrl}')`;
+                        skillDetailMedia.style.backgroundSize = 'cover';
+                        skillDetailMedia.style.backgroundPosition = 'center';
+                        skillDetailMedia.classList.remove('img-placeholder');
+                    } else {
+                        skillDetailMedia.style.backgroundImage = '';
+                        skillDetailMedia.classList.add('img-placeholder');
+                    }
+                }
+
+                // Show the detail section
+                skillDetailSection.classList.remove('hidden');
+                
+                // Small delay to allow display block to apply before fading in and scrolling
+                setTimeout(() => {
+                    skillDetailSection.classList.replace('opacity-0', 'opacity-100');
+                    skillDetailSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 50);
+            });
+        });
+
+        // Hide the detail section when the user moves their mouse completely out of it
+        if (skillDetailSection) {
+            skillDetailSection.addEventListener('mouseleave', () => {
+                skillDetailSection.classList.replace('opacity-100', 'opacity-0');
+                
+                // Wait for the fade out transition before hiding the element entirely
+                setTimeout(() => {
+                    skillDetailSection.classList.add('hidden');
+                }, 500); 
+            });
+        }
+
+        // Action when clicking "Explore Project" in the preview panel
+        function navigateFromPreview() {
+            if (currentTargetProject) {
+                loadCaseStudyData(currentTargetProject.id);
+                navigateTo('project-view');
+            }
+        }
+
+        // Direct clicks on cards route to the case study (handles Mobile and Desktop)
+        projectCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const id = card.getAttribute('data-id');
+                loadCaseStudyData(id);
+                navigateTo('project-view');
+            });
+        });
+
+        // Simple View Router (Fades between Home and Project View)
+        function navigateTo(viewId) {
+            const homeView = document.getElementById('home-view');
+            const projectView = document.getElementById('project-view');
+            const globalBg = document.getElementById('global-bg-wrapper');
+
+            if(viewId === 'project-view') {
+                homeView.classList.replace('opacity-100', 'opacity-0');
+                if (globalBg) globalBg.style.opacity = '0';
+                setTimeout(() => {
+                    homeView.classList.add('hidden');
+                    homeView.classList.remove('block');
+                    if (globalBg) globalBg.classList.add('hidden');
+                    
+                    projectView.classList.remove('hidden');
+                    projectView.classList.add('block');
+                    
+                    setTimeout(() => {
+                        projectView.classList.replace('opacity-0', 'opacity-100');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }, 50);
+                }, 300);
+            } 
+            else if(viewId === 'home-view') {
+                projectView.classList.replace('opacity-100', 'opacity-0');
+                setTimeout(() => {
+                    projectView.classList.add('hidden');
+                    projectView.classList.remove('block');
+                    
+                    homeView.classList.remove('hidden');
+                    homeView.classList.add('block');
+                    if (globalBg) {
+                        globalBg.classList.remove('hidden');
+                        setTimeout(() => globalBg.style.opacity = '1', 50);
+                    }
+                    
+                    setTimeout(() => {
+                        homeView.classList.replace('opacity-0', 'opacity-100');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }, 50);
+                }, 300);
+            }
+        }
+
+        // Parallax Background Effect
+        let lastKnownScrollPos = 0;
+        let isTicking = false;
+
+        window.addEventListener('scroll', function() {
+            lastKnownScrollPos = window.scrollY;
+            if (!isTicking) {
+                window.requestAnimationFrame(function() {
+                    const parallaxBg = document.getElementById('parallax-bg');
+                    const globalBgWrapper = document.getElementById('global-bg-wrapper');
+                    
+                    // Only calculate if global background is active
+                    if (parallaxBg && globalBgWrapper && !globalBgWrapper.classList.contains('hidden')) {
+                        // 1 to 0.5 ratio: Move the fixed background UP by half the scroll distance
+                        parallaxBg.style.transform = `translateY(${-lastKnownScrollPos * 0.5}px)`;
+                    }
+                    isTicking = false;
+                });
+                isTicking = true;
+            }
+        });
+    </script>
+</body>
+</html>
